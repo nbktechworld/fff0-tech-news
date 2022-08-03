@@ -19,27 +19,30 @@ export default function ArticleSlug(props) {
 }
 
 export async function getStaticProps(context) {
+  const article = articles.find((article) => {
+    return article.slug === context.params.articleSlug;
+  });
+
+  if (!article) {
+    return {
+      notFound: true
+    }
+  }
+
   return {
     props: {
-      article: articles[0]
+      article: article
     }
   }
 }
 
 export async function getStaticPaths() {
   return {
-    paths: [
-      {
-        params: {
-          articleSlug: articles[0].slug,
-        },
+    paths: articles.map((article) => ({
+      params: {
+        articleSlug: article.slug,
       },
-      {
-        params: {
-          articleSlug: articles[1].slug,
-        },
-      },
-    ],
+    })),
     fallback: false 
   }
 }
