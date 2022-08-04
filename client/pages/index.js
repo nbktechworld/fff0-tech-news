@@ -3,3 +3,12 @@ export default function Index() {
     <div>Test3</div>
   )
 }
+
+export async function getStaticProps() {
+  return {
+    redirect: {
+      destination: '/articles',
+      permanent: false
+    }
+  }
+}
