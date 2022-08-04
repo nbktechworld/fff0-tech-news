@@ -1,4 +1,5 @@
 import { Card } from 'react-bootstrap';
+import Link from 'next/link';
 
 import articles from '../../articles';
 
@@ -10,7 +11,9 @@ export default function ArticlesIndex(props) {
         {props.articles.map((article) => (
           <Card className="mb-2" key={article.id}>
             <Card.Body>
-              {article.title}
+              <Link href={`/articles/${article.slug}`}>
+                <a>{article.title}</a>
+              </Link>
             </Card.Body>
           </Card>
         ))}

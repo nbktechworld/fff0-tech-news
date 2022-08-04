@@ -1,5 +1,7 @@
 import { useRouter } from 'next/router';
+import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import Card from 'react-bootstrap/Card';
+import Link from 'next/link';
 
 import articles from '../../articles';
 
@@ -8,6 +10,14 @@ export default function ArticleSlug(props) {
 
   return (
     <>
+      <Breadcrumb>
+        <Breadcrumb.Item linkAs={Link} href="/articles">
+          <a>Articles</a>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item active>
+          <a>Article</a>
+        </Breadcrumb.Item>
+      </Breadcrumb>
       <Card>
         <Card.Title>{props.article.title}</Card.Title>
         <Card.Body>
