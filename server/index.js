@@ -1,14 +1,22 @@
 const express = require('express');
+const articles = require('./articles');
 
 const app = express();
 
 // Define the routes (API endpoints)
 app.get('/articles', (req, res) => {
-  res.send('Articles2');
+  res.send(articles);
 });
 
 app.get('/articles/:articleSlug', (req, res) => {
-  res.send(`specific article ${req.params.articleSlug}`);
+  const article = articles.find((article) => {
+    return article.slug === req.params.articleSlug;
+  });
+
+  if (!article) {
+    return res.status(404).send({ error: 'Not Found' });
+  }
+  res.send(article);
 });
 
 const port = 3001;
