@@ -3,8 +3,6 @@ import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import Card from 'react-bootstrap/Card';
 import Link from 'next/link';
 
-import articles from '../../articles';
-
 export default function ArticleSlug(props) {
   // const router = useRouter();
 
@@ -28,12 +26,11 @@ export default function ArticleSlug(props) {
   )
 }
 
-export async function getStaticProps(context) {
-  const article = articles.find((article) => {
-    return article.slug === context.params.articleSlug;
-  });
+export async function getServerSideProps(context) {
+  const response = await fetch(`http://localhost:3001/articles/${context.params.articleSlug}`);
+  const article = await response.json();
 
-  if (!article) {
+  if (response.status === 404) {
     return {
       notFound: true
     }
@@ -43,16 +40,5 @@ export async function getStaticProps(context) {
     props: {
       article: article
     }
-  }
-}
-
-export async function getStaticPaths() {
-  return {
-    paths: articles.map((article) => ({
-      params: {
-        articleSlug: article.slug,
-      },
-    })),
-    fallback: false 
   }
 }
