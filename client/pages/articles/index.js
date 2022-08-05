@@ -1,8 +1,6 @@
 import { Card } from 'react-bootstrap';
 import Link from 'next/link';
 
-import articles from '../../articles';
-
 export default function ArticlesIndex(props) {
   return (
     <>
@@ -22,7 +20,10 @@ export default function ArticlesIndex(props) {
   )
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
+  const response = await fetch('http://localhost:3001/articles');
+  const articles = await response.json();
+
   return {
     props: {
       articles
