@@ -1,0 +1,6 @@
+CREATE TABLE articles (
+  id BIGSERIAL CONSTRAINT articles_pkey PRIMARY KEY,
+  slug VARCHAR(128) NOT NULL,
+  title VARCHAR(128) NOT NULL,
+  body VARCHAR(4096) NOT NULL
+);
