@@ -9,13 +9,25 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 
+// When listening to router transitions, if you use class-based:
+// define componentDidMount and subscribe to events there
+// define componentWillUnmount and unsubscribe there
+// to acess the router, use withRouter higher-order component
+// (router props is injected into App: this.props.router)
+// class App extends React.Component {
+//   ...
+//   componentDidMount() {...}
+//   componentWillUnmount() {...}
+//   ...
+// }
+// export default withRouter(App)
+
 function App({ Component, pageProps }) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     const handleRouteChangeStart = () => {
-      console.log('handleRouteChangeStart')
       setLoading(true);
     }
 
@@ -30,7 +42,13 @@ function App({ Component, pageProps }) {
     router.events.on('routeChangeStart', handleRouteChangeStart);
     router.events.on('routeChangeComplete', handleRouteChangeComplete);
     router.events.on('routeChangeError', handleRouteChangeError);
-  });
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChangeStart);
+      router.events.off('routeChangeComplete', handleRouteChangeComplete);
+      router.events.off('routeChangeError', handleRouteChangeError);
+    }
+  }, [router]);
 
   return (
     <>
