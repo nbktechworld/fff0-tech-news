@@ -21,6 +21,11 @@ app.get('/articles/:articleSlug', async (req, res) => {
   res.send(article);
 });
 
+// Catch 404
+app.use((req, res, next) => {
+  res.status(404).send({ error: 'Not Found' });
+});
+
 const port = 3001;
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
