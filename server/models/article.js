@@ -14,12 +14,28 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Article.init({
-    slug: DataTypes.STRING,
-    title: DataTypes.STRING,
-    body: DataTypes.STRING
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.BIGINT,
+    },
+    slug: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    title: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    body: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
   }, {
     sequelize,
     modelName: 'Article',
+    underscored: true
   });
   return Article;
 };
