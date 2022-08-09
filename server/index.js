@@ -1,16 +1,18 @@
 const express = require('express');
-const articles = require('./articles');
+const db = require('./models');
 
 const app = express();
 
 // Define the routes (API endpoints)
-app.get('/articles', (req, res) => {
-  res.send(articles);
+app.get('/articles', async (req, res) => {
+  res.send(await db.Article.findAll());
 });
 
-app.get('/articles/:articleSlug', (req, res) => {
-  const article = articles.find((article) => {
-    return article.slug === req.params.articleSlug;
+app.get('/articles/:articleSlug', async (req, res) => {
+  const article = await db.Article.findOne({
+    where: {
+      slug: req.params.articleSlug
+    }
   });
 
   if (!article) {
