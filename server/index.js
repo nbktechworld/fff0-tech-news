@@ -3,17 +3,22 @@ const db = require('./models');
 
 const app = express();
 
-// Define the routes (API endpoints)
-app.get('/articles', async (req, res, next) => {
-  try {
-    res.send(await db.Article.findAll());
-  }
-  catch (error) {
-    next(error);
-  }
-});
+function tryCatch(handler) {
+  return async (req, res, next) => {
+    try {
+      await handler(req, res, next);
+    }
+    catch (error) {
+      next(error);
+    }
+  };
+}
 
-app.get('/articles/:articleSlug', async (req, res, next) => {
+async function getArticles (req, res, next) {
+  res.send(await db.Article.findAll());
+}
+
+async function getArticle (req, res, next) {
   try {
     const article = await db.Article.findOne({
       where: {
@@ -29,7 +34,11 @@ app.get('/articles/:articleSlug', async (req, res, next) => {
   catch (error) {
     next(error);
   }
-});
+}
+
+// Define the routes (API endpoints)
+app.get('/articles', tryCatch(getArticles));
+app.get('/articles/:articleSlug', tryCatch(getArticle));
 
 // Catch 404
 app.use((req, res, next) => {
