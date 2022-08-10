@@ -21,38 +21,48 @@ class ArticlesNew extends React.Component {
 
   async onSubmit(event) {
     event.preventDefault();
+    this.setState({
+      submissionError: null
+    }, async () => {
+      const articleBody = {
+        slug: this.state.slug,
+        title: this.state.title,
+        body: this.state.body
+      };
+      // Make POST /articles
+      let response;
+      try {
+        response = await fetch('http://localhost:3001/articles', {
+          method: 'POST',
+          body: JSON.stringify(articleBody)
+        });
 
-    const articleBody = {
-      slug: this.state.slug,
-      title: this.state.title,
-      body: this.state.body
-    };
-    // Make POST /articles
-    let response;
-    try {
-      response = await fetch('http://localhost:3001/articles', {
-        method: 'POST',
-        body: JSON.stringify(articleBody)
-      });
-      const createdArticle = response.json();
-    }
-    catch (error) {
-      this.setState({
-        submissionError: error.message
-      });
-      console.error('Error here: ', error);
-    }
-    // Navigate to /articles/${createdArticle.id}
+        if (response.ok) {
+          const createdArticle = response.json();
+        }
+        else {
+          this.setState({
+            submissionError: `${response.status} ${response.statusText}`,
+          });
+        }
+      }
+      catch (error) {
+        this.setState({
+          submissionError: error.message
+        });
+      }
+      // Navigate to /articles/${createdArticle.id}
 
-    // If you want to do the Promise - then approach
-    // .then((response) => {
-    //   return response.json();
-    // }).then((createdArticle) => {
-    //   // redirect to the article that was created
-    // })
-    // .catch((error) => {
-    //
-    // });
+      // If you want to do the Promise - then approach
+      // .then((response) => {
+      //   return response.json();
+      // }).then((createdArticle) => {
+      //   // redirect to the article that was created
+      // })
+      // .catch((error) => {
+      //
+      // });
+    });
   }
 
   render() {
