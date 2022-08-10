@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Link from 'next/link';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import Alert from 'react-bootstrap/Alert';
 
 class ArticlesNew extends React.Component {
   constructor(props) {
@@ -12,19 +13,46 @@ class ArticlesNew extends React.Component {
       slug: '',
       title: '',
       body: '',
+      submissionError: null,
     };
 
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onSubmit(event) {
+  async onSubmit(event) {
     event.preventDefault();
 
-    console.log({
+    const articleBody = {
       slug: this.state.slug,
       title: this.state.title,
       body: this.state.body
-    });
+    };
+    // Make POST /articles
+    let response;
+    try {
+      response = await fetch('http://localhost:3001/articles', {
+        method: 'POST',
+        body: JSON.stringify(articleBody)
+      });
+      const createdArticle = response.json();
+    }
+    catch (error) {
+      this.setState({
+        submissionError: error.message
+      });
+      console.error('Error here: ', error);
+    }
+    // Navigate to /articles/${createdArticle.id}
+
+    // If you want to do the Promise - then approach
+    // .then((response) => {
+    //   return response.json();
+    // }).then((createdArticle) => {
+    //   // redirect to the article that was created
+    // })
+    // .catch((error) => {
+    //
+    // });
   }
 
   render() {
@@ -55,6 +83,11 @@ class ArticlesNew extends React.Component {
           }} value={this.state.body} />
         </Form.Group>
         <Button className="mt-3" type="submit">Create</Button>
+        {this.state.submissionError && (
+          <Alert variant="danger" className="mt-3">
+            {this.state.submissionError}
+          </Alert>
+        )}
       </Form>
     )
   }
