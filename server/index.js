@@ -36,11 +36,11 @@ async function createArticle(req, res) {
   // access the fields sent by the client & build an article with those values; save that and send back the created article, including an id in the response
   // (typically we permit only specific values, to prevent malicious actors from tampering with our system)
   // (also, we should validate the values)
-  const newArticle = {
-    slug: req.body.slug,
-    title: req.body.title,
-    body: req.body.body,
-  };
+  const newArticle = {};
+  const permittedFields = ['slug', 'title', 'body'];
+  for (const permittedField of permittedFields) {
+    newArticle[permittedField] = req.body[permittedField];
+  }
 
   const article = await db.Article.create(newArticle);
 
