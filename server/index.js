@@ -36,6 +36,12 @@ async function getArticle (req, res, next) {
   }
 }
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
+
+  next();
+});
+
 // Define the routes (API endpoints)
 app.get('/articles', tryCatch(getArticles));
 app.get('/articles/:articleSlug', tryCatch(getArticle));
