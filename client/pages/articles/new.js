@@ -34,6 +34,9 @@ class ArticlesNew extends React.Component {
       try {
         response = await fetch('http://localhost:3001/articles', {
           method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
           body: JSON.stringify(articleBody)
         });
 
