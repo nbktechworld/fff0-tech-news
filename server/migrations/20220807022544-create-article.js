@@ -10,7 +10,8 @@ module.exports = {
       },
       slug: {
         allowNull: false,
-        type: Sequelize.STRING(128)
+        type: Sequelize.STRING(128),
+        unique: true
       },
       title: {
         allowNull: false,

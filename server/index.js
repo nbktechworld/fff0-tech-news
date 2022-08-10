@@ -42,7 +42,23 @@ async function createArticle(req, res) {
     newArticle[permittedField] = req.body[permittedField];
   }
 
-  const article = await db.Article.create(newArticle);
+  const existingArticle = await db.Article.findOne({
+    where: {
+      slug: newArticle.slug
+    }
+  });
+
+  if (existingArticle) {
+    return res.status(422).send({ error: 'Article slug already exists' });
+  }
+
+  let article
+  try {
+    article = await db.Article.create(newArticle);
+  }
+  catch (error) {
+    return res.status(422).send({ error: 'Unprocessable Entity' });
+  }
 
   res.send(article)
 }

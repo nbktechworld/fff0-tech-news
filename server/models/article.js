@@ -22,15 +22,24 @@ module.exports = (sequelize, DataTypes) => {
     },
     slug: {
       allowNull: false,
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      validate: {
+        len: [1, 128]
+      },
     },
     title: {
       allowNull: false,
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      validate: {
+        len: [1, 128]
+      },
     },
     body: {
       allowNull: false,
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      validate: {
+        len: [1, 4096]
+      },
     },
   }, {
     sequelize,

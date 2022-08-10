@@ -41,11 +41,19 @@ class ArticlesNew extends React.Component {
         });
 
         if (response.ok) {
-          const createdArticle = response.json();
+          const createdArticle = await response.json();
         }
         else {
+          const responseText = (await response.text()).trim();
+          let submissionError = `${response.status} ${response.statusText}`;
+          if (responseText !== '') {
+            const errorResponse = JSON.parse(responseText);
+            if (errorResponse.error) {
+              submissionError = errorResponse.error;
+            }
+          }
           this.setState({
-            submissionError: `${response.status} ${response.statusText}`,
+            submissionError: submissionError,
           });
         }
       }
