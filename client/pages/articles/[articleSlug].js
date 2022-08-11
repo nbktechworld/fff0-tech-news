@@ -3,20 +3,29 @@ import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import Card from 'react-bootstrap/Card';
 import Link from 'next/link';
 import Alert from 'react-bootstrap/Alert';
+import Button from 'react-bootstrap/Button';
+import { PencilSquare } from 'react-bootstrap-icons';
 
 export default function ArticleSlug(props) {
   // const router = useRouter();
 
   return (
     <>
-      <Breadcrumb>
-        <Breadcrumb.Item linkAs={Link} href="/articles">
-          <a>Articles</a>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item active>
-          <a>Article</a>
-        </Breadcrumb.Item>
-      </Breadcrumb>
+      <div className="d-flex justify-content-between">
+        <Breadcrumb>
+          <Breadcrumb.Item linkAs={Link} href="/articles">
+            <a>Articles</a>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item active>
+            <a>Article</a>
+          </Breadcrumb.Item>
+        </Breadcrumb>
+        <Link href={`/articles/${props.article.slug}/edit`} passHref>
+          <Button as="a" size="sm" className="align-self-start">
+            <PencilSquare className="me-2" />Edit
+          </Button>
+        </Link>
+      </div>
       {props.articleError && (
         <Alert variant="danger">
           {props.articleError}
