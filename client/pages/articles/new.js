@@ -11,13 +11,26 @@ class ArticlesNew extends React.Component {
     super(props);
 
     this.state = {
-      slug: '',
-      title: '',
-      body: '',
+      article: {
+        slug: '',
+        title: '',
+        body: '',
+      },
       submissionError: null,
     };
 
     this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  onFieldChange(fieldName) {
+    return (event) => {
+      this.setState({
+        article: {
+          ...this.state.article,
+          [fieldName]: event.target.value
+        }
+      });
+    };
   }
 
   async onSubmit(event) {
@@ -25,11 +38,7 @@ class ArticlesNew extends React.Component {
     this.setState({
       submissionError: null
     }, async () => {
-      const articleBody = {
-        slug: this.state.slug,
-        title: this.state.title,
-        body: this.state.body,
-      };
+      const articleBody = this.state.article;
       // Make POST /articles
       let response;
       try {
@@ -80,8 +89,6 @@ class ArticlesNew extends React.Component {
   }
 
   render() {
-    console.log(this.state)
-
     return (
       <Form onSubmit={this.onSubmit}>
         <Breadcrumb>
@@ -90,21 +97,15 @@ class ArticlesNew extends React.Component {
         </Breadcrumb>
         <Form.Group controlId="article_slug">
           <Form.Label>Slug</Form.Label>
-          <Form.Control type="text" onChange={(event) => {
-            this.setState({ slug: event.target.value })
-          }} value={this.state.slug} />
+          <Form.Control type="text" onChange={this.onFieldChange('slug')} value={this.state.article.slug} />
         </Form.Group>
         <Form.Group controlId="article_title">
           <Form.Label>Title</Form.Label>
-          <Form.Control type="text" onChange={(event) => {
-            this.setState({ title: event.target.value })
-          }} value={this.state.title} />
+          <Form.Control type="text" onChange={this.onFieldChange('title')} value={this.state.article.title} />
         </Form.Group>
         <Form.Group controlId="article_body">
           <Form.Label>Body</Form.Label>
-          <Form.Control as="textarea" onChange={(event) => {
-            this.setState({ body: event.target.value })
-          }} value={this.state.body} />
+          <Form.Control as="textarea" onChange={this.onFieldChange('body')} value={this.state.article.body} />
         </Form.Group>
         <Button className="mt-3" type="submit">Create</Button>
         {this.state.submissionError && (
