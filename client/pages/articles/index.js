@@ -1,11 +1,19 @@
 import { Card } from 'react-bootstrap';
 import Link from 'next/link';
 import Alert from 'react-bootstrap/Alert';
+import Button from 'react-bootstrap/Button';
 
 export default function ArticlesIndex(props) {
   return (
     <>
-      <div className="mb-2">Articles</div>
+      <div className="d-flex justify-content-between mb-2">
+        Articles
+        <Link href="/articles/new" passHref>
+          <Button as={"a"} variant="primary" size="sm">
+            New article
+          </Button>
+        </Link>
+      </div>
       {props.articlesError && (
         <Alert variant="danger">
           {props.articlesError}

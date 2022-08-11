@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Link from 'next/link';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import Alert from 'react-bootstrap/Alert';
+import { withRouter } from 'next/router';
 
 class ArticlesNew extends React.Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class ArticlesNew extends React.Component {
       const articleBody = {
         slug: this.state.slug,
         title: this.state.title,
-        body: this.state.body
+        body: this.state.body,
       };
       // Make POST /articles
       let response;
@@ -42,6 +43,8 @@ class ArticlesNew extends React.Component {
 
         if (response.ok) {
           const createdArticle = await response.json();
+          this.props.router.push(`/articles/${createdArticle.slug}`);
+          return;
         }
         else {
           const responseText = (await response.text()).trim();
@@ -114,4 +117,4 @@ class ArticlesNew extends React.Component {
   }
 }
 
-export default ArticlesNew;
+export default withRouter(ArticlesNew);
