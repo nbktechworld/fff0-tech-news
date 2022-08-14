@@ -1,10 +1,8 @@
 import React from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import Link from 'next/link';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
-import Alert from 'react-bootstrap/Alert';
 import { withRouter } from 'next/router';
+import ArticleForm from '../../components/articles/ArticleForm';
 
 class ArticlesNew extends React.Component {
   constructor(props) {
@@ -20,100 +18,51 @@ class ArticlesNew extends React.Component {
     };
 
     this.onSubmit = this.onSubmit.bind(this);
+    this.onSuccess = this.onSuccess.bind(this);
   }
 
-  onFieldChange(fieldName) {
-    return (event) => {
-      this.setState({
-        article: {
-          ...this.state.article,
-          [fieldName]: event.target.value
-        }
-      });
-    };
-  }
+  
 
-  async onSubmit(event) {
-    event.preventDefault();
-    this.setState({
-      submissionError: null
-    }, async () => {
-      const articleBody = this.state.article;
-      // Make POST /articles
-      let response;
-      try {
-        response = await fetch('http://localhost:3001/articles', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(articleBody)
-        });
-
-        if (response.ok) {
-          const createdArticle = await response.json();
-          this.props.router.push(`/articles/${createdArticle.slug}`);
-          return;
-        }
-        else {
-          const responseText = (await response.text()).trim();
-          let submissionError = `${response.status} ${response.statusText}`;
-          if (responseText !== '') {
-            const errorResponse = JSON.parse(responseText);
-            if (errorResponse.error) {
-              submissionError = errorResponse.error;
-            }
-          }
-          this.setState({
-            submissionError: submissionError,
-          });
-        }
-      }
-      catch (error) {
-        this.setState({
-          submissionError: error.message
-        });
-      }
-      // Navigate to /articles/${createdArticle.id}
-
-      // If you want to do the Promise - then approach
-      // .then((response) => {
-      //   return response.json();
-      // }).then((createdArticle) => {
-      //   // redirect to the article that was created
-      // })
-      // .catch((error) => {
-      //
-      // });
+  async onSubmit(article) {
+    // Make POST /articles
+    let response;
+    response = await fetch('http://localhost:3001/articles', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(article)
     });
+
+    if (response.ok) {
+      return response.json();
+    }
+    else {
+      const responseText = (await response.text()).trim();
+      let submissionError = `${response.status} ${response.statusText}`;
+      if (responseText !== '') {
+        const errorResponse = JSON.parse(responseText);
+        if (errorResponse.error) {
+          submissionError = errorResponse.error;
+        }
+      }
+      throw new Error(submissionError);
+    }
+  }
+
+  onSuccess(createdArticle) {
+    this.props.router.push(`/articles/${createdArticle.slug}`);
   }
 
   render() {
     return (
-      <Form onSubmit={this.onSubmit}>
+      <>
         <Breadcrumb>
           <Breadcrumb.Item href="/articles" linkAs={Link}><a>Articles</a></Breadcrumb.Item>
           <Breadcrumb.Item active>New</Breadcrumb.Item>
         </Breadcrumb>
-        <Form.Group controlId="article_slug">
-          <Form.Label>Slug</Form.Label>
-          <Form.Control type="text" onChange={this.onFieldChange('slug')} value={this.state.article.slug} />
-        </Form.Group>
-        <Form.Group controlId="article_title">
-          <Form.Label>Title</Form.Label>
-          <Form.Control type="text" onChange={this.onFieldChange('title')} value={this.state.article.title} />
-        </Form.Group>
-        <Form.Group controlId="article_body">
-          <Form.Label>Body</Form.Label>
-          <Form.Control as="textarea" onChange={this.onFieldChange('body')} value={this.state.article.body} />
-        </Form.Group>
-        <Button className="mt-3" type="submit">Create</Button>
-        {this.state.submissionError && (
-          <Alert variant="danger" className="mt-3">
-            {this.state.submissionError}
-          </Alert>
-        )}
-      </Form>
+        <ArticleForm onSubmit={this.onSubmit} onSuccess={this.onSuccess} />
+      </>
     )
   }
 }
