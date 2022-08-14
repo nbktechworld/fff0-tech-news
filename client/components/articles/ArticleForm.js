@@ -9,9 +9,9 @@ class ArticleForm extends React.Component {
 
     this.state = {
       article: {
-        slug: '',
-        title: '',
-        body: '',
+        slug: props.article ? props.article.slug : '',
+        title: props.article ? props.article.title : '',
+        body: props.article ? props.article.body : '',
       },
       submissionError: null,
     };
@@ -62,7 +62,7 @@ class ArticleForm extends React.Component {
           <Form.Label>Body</Form.Label>
           <Form.Control as="textarea" onChange={this.onFieldChange('body')} value={this.state.article.body} />
         </Form.Group>
-        <Button className="mt-3" type="submit">Create</Button>
+        <Button className="mt-3" type="submit">{this.props.submitButtonText || 'Create'}</Button>
         {this.state.submissionError && (
           <Alert variant="danger" className="mt-3">
             {this.state.submissionError}

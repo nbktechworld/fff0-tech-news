@@ -8,25 +8,15 @@ class ArticlesNew extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      article: {
-        slug: '',
-        title: '',
-        body: '',
-      },
-      submissionError: null,
-    };
+    this.state = {};
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onSuccess = this.onSuccess.bind(this);
   }
 
-  
-
   async onSubmit(article) {
     // Make POST /articles
-    let response;
-    response = await fetch('http://localhost:3001/articles', {
+    const response = await fetch('http://localhost:3001/articles', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
