@@ -14,6 +14,7 @@ class ArticleForm extends React.Component {
         body: props.article ? props.article.body : '',
       },
       submissionError: null,
+      submitting: false,
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -22,15 +23,22 @@ class ArticleForm extends React.Component {
   async onSubmit(event) {
     event.preventDefault();
     this.setState({
-      submissionError: null
+      submissionError: null,
+      submitting: true,
     }, async () => {
       try {
         const response = this.props.onSubmit && await this.props.onSubmit(this.state.article);
-        this.props.onSuccess && this.props.onSuccess(response);
+
+        this.setState({
+          submitting: false,
+        }, () => {
+          this.props.onSuccess && this.props.onSuccess(response);
+        })
       }
       catch (error) {
         this.setState({
-          submissionError: error.message
+          submissionError: error.message,
+          submitting: false
         });
       }
     });
@@ -62,7 +70,7 @@ class ArticleForm extends React.Component {
           <Form.Label>Body</Form.Label>
           <Form.Control as="textarea" onChange={this.onFieldChange('body')} value={this.state.article.body} />
         </Form.Group>
-        <Button className="mt-3" type="submit">{this.props.submitButtonText || 'Create'}</Button>
+        <Button className="mt-3" type="submit" disabled={this.state.submitting}>{this.props.submitButtonText || 'Create'}</Button>
         {this.state.submissionError && (
           <Alert variant="danger" className="mt-3">
             {this.state.submissionError}
