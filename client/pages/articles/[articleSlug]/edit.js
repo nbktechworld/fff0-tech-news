@@ -3,12 +3,13 @@ import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import ArticleForm from "../../../components/articles/ArticleForm";
 import { withRouter } from 'next/router';
 import Link from 'next/link';
+import Alert from 'react-bootstrap/Alert';
 
 class ArticleEdit extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {}
+    this.state = {};
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onSuccess = this.onSuccess.bind(this);
@@ -55,15 +56,42 @@ class ArticleEdit extends React.Component {
           <Breadcrumb.Item href={`/articles/${this.props.router.query.articleSlug}`} linkAs={Link}><a>Article</a></Breadcrumb.Item>
           <Breadcrumb.Item active>Edit</Breadcrumb.Item>
         </Breadcrumb>
-        <ArticleForm
-          onSubmit={this.onSubmit}
-          onSuccess={this.onSuccess}
-          submitButtonText="Update"
-          article={this.state.article}
-        />
+        {this.props.articleError ? (
+          <Alert variant="danger">{this.props.articleError}</Alert>
+        ) : (
+          <ArticleForm
+            onSubmit={this.onSubmit}
+            onSuccess={this.onSuccess}
+            submitButtonText="Update"
+            article={this.props.article}
+          />
+        )}
       </>
     )
   }
+}
+
+export async function getServerSideProps(context) {
+  const response = await fetch(`http://localhost:3001/articles/${context.params.articleSlug}`);
+
+  const props = {};
+  if (response.ok) {
+    props.article = await response.json();
+  }
+  else {
+    if (response.status === 404) {
+      return {
+        notFound: true
+      };
+    }
+    else {
+      props.articleError = `${response.status} ${response.statusText}`;
+    }
+  }
+
+  return ({
+    props
+  });
 }
 
 export default withRouter(ArticleEdit);
