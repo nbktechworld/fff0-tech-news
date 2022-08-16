@@ -8,16 +8,31 @@ class ArticleForm extends React.Component {
     super(props);
 
     this.state = {
-      article: {
-        slug: props.article ? props.article.slug : '',
-        title: props.article ? props.article.title : '',
-        body: props.article ? props.article.body : '',
-      },
+      article: this.getInitialArticleValues(),
       submissionError: null,
       submitting: false,
     };
 
     this.onSubmit = this.onSubmit.bind(this);
+    this.onResetClick = this.onResetClick.bind(this);
+  }
+
+  getInitialArticleValues() {
+    return {
+      slug: this.props.article ? this.props.article.slug : '',
+      title: this.props.article ? this.props.article.title : '',
+      body: this.props.article ? this.props.article.body : '',
+    }
+  }
+
+  onResetClick(event) {
+    const shouldReset = confirm('Are you sure?');
+
+    if (shouldReset) {
+      this.setState({
+        article: this.getInitialArticleValues()
+      });
+    }
   }
 
   async onSubmit(event) {
@@ -70,7 +85,10 @@ class ArticleForm extends React.Component {
           <Form.Label>Body</Form.Label>
           <Form.Control as="textarea" onChange={this.onFieldChange('body')} value={this.state.article.body} />
         </Form.Group>
-        <Button className="mt-3" type="submit" disabled={this.state.submitting}>{this.props.submitButtonText || 'Create'}</Button>
+        <div className="mt-3">
+          <Button type="submit" disabled={this.state.submitting}>{this.props.submitButtonText || 'Create'}</Button>
+          <Button className="ms-2" type="button" onClick={this.onResetClick} disabled={this.state.submitting} variant="secondary">Reset Form</Button>
+        </div>
         {this.state.submissionError && (
           <Alert variant="danger" className="mt-3">
             {this.state.submissionError}
