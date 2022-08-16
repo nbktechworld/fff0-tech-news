@@ -46,6 +46,7 @@ class ArticleEdit extends React.Component {
 
   onSuccess(updatedArticle) {
     this.props.router.push(`/articles/${updatedArticle.slug}`);
+    this.props.showAppNotification('Article updated successfully!');
   }
 
   render() {

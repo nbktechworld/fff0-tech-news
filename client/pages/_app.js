@@ -8,6 +8,8 @@ import Col from 'react-bootstrap/Col';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
+import Toast from 'react-bootstrap/Toast';
+import { ExclamationCircle } from 'react-bootstrap-icons';
 
 // When listening to router transitions, if you use class-based:
 // define componentDidMount and subscribe to events there
@@ -24,7 +26,23 @@ import Spinner from 'react-bootstrap/Spinner';
 
 function App({ Component, pageProps }) {
   const [loading, setLoading] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
   const router = useRouter();
+
+  const onNotificationClose = () => {
+    setShowNotification(false);
+  };
+
+  const showAppNotification = (message) => {
+    setNotificationMessage(message);
+    setShowNotification(true);
+
+    setTimeout(() => {
+      setShowNotification(false);
+      setNotificationMessage('');
+    }, 5000);
+  };
 
   useEffect(() => {
     const handleRouteChangeStart = () => {
@@ -52,6 +70,15 @@ function App({ Component, pageProps }) {
 
   return (
     <>
+      {showNotification && (
+        <Toast className="position-fixed app-notification" onClose={onNotificationClose}>
+          <Toast.Header>
+            <ExclamationCircle className="me-2" />
+            <strong className="me-auto">Notification</strong>
+          </Toast.Header>
+          <Toast.Body>{notificationMessage}</Toast.Body>
+        </Toast>
+      )}
       <header>
         <Navbar bg="dark" variant="light">
           <Container>
@@ -71,7 +98,7 @@ function App({ Component, pageProps }) {
                 </Spinner>
               </div>
             )}
-            <Component {...pageProps} />
+            <Component {...pageProps} showAppNotification={showAppNotification} />
           </Col>
         </Row>
       </Container>
