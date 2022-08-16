@@ -59,7 +59,13 @@ async function updateArticle(req, res) {
   }
 
   const modifiedArticle = filterFields(req.body, permittedFields);
-  const updatedArticle = await existingArticle.update(modifiedArticle);
+  let updatedArticle;
+  try {
+    updatedArticle = await existingArticle.update(modifiedArticle);
+  }
+  catch (error) {
+    return res.status(422).send({ error: 'Unprocessable Entity' });
+  }
   res.send(updatedArticle);
 }
 

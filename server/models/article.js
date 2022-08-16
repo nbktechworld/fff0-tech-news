@@ -24,7 +24,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.STRING,
       validate: {
-        len: [1, 128]
+        len: [1, 128],
+        is: /^[a-z0-9-]+$/,
       },
     },
     title: {
