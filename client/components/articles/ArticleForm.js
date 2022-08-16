@@ -75,15 +75,16 @@ class ArticleForm extends React.Component {
       <Form onSubmit={this.onSubmit}>
         <Form.Group controlId="article_slug">
           <Form.Label>Slug</Form.Label>
-          <Form.Control type="text" onChange={this.onFieldChange('slug')} value={this.state.article.slug} />
+          <Form.Control type="text" onChange={this.onFieldChange('slug')} value={this.state.article.slug} required maxLength={128} pattern="[a-z0-9-]+" />
+          <Form.Text>Use lowercase letters, numbers, or a hyphen</Form.Text>
         </Form.Group>
         <Form.Group controlId="article_title">
           <Form.Label>Title</Form.Label>
-          <Form.Control type="text" onChange={this.onFieldChange('title')} value={this.state.article.title} />
+          <Form.Control type="text" onChange={this.onFieldChange('title')} value={this.state.article.title} required maxLength={128} />
         </Form.Group>
         <Form.Group controlId="article_body">
           <Form.Label>Body</Form.Label>
-          <Form.Control as="textarea" onChange={this.onFieldChange('body')} value={this.state.article.body} />
+          <Form.Control as="textarea" onChange={this.onFieldChange('body')} value={this.state.article.body} required maxLength={4096} />
         </Form.Group>
         <div className="mt-3">
           <Button type="submit" disabled={this.state.submitting}>{this.props.submitButtonText || 'Create'}</Button>
