@@ -11,6 +11,7 @@ class ArticleForm extends React.Component {
       article: this.getInitialArticleValues(),
       submissionError: null,
       submitting: false,
+      validated: false,
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -37,6 +38,12 @@ class ArticleForm extends React.Component {
 
   async onSubmit(event) {
     event.preventDefault();
+
+    if (event.currentTarget.checkValidity() === false) {
+      this.setState({ validated: true });
+      return;
+    }
+
     this.setState({
       submissionError: null,
       submitting: true,
@@ -72,19 +79,25 @@ class ArticleForm extends React.Component {
 
   render() {
     return (
-      <Form onSubmit={this.onSubmit}>
+      <Form onSubmit={this.onSubmit} noValidate validated={this.state.validated}>
         <Form.Group controlId="article_slug">
           <Form.Label>Slug</Form.Label>
-          <Form.Control type="text" onChange={this.onFieldChange('slug')} value={this.state.article.slug} required maxLength={128} pattern="[a-z0-9-]+" />
-          <Form.Text>Use lowercase letters, numbers, or a hyphen</Form.Text>
+          <Form.Control type="text" onChange={this.onFieldChange('slug')} value={this.state.article.slug} required maxLength={128} pattern="[a-z0-9-]+" aria-describedby="article_slug_hint_text" />
+          <Form.Text id="article_slug_hint_text">Use lowercase letters, numbers, or a hyphen</Form.Text>
         </Form.Group>
         <Form.Group controlId="article_title">
           <Form.Label>Title</Form.Label>
           <Form.Control type="text" onChange={this.onFieldChange('title')} value={this.state.article.title} required maxLength={128} />
+          <Form.Control.Feedback type="invalid">
+            Keep the title between 1 and 128 characters.
+          </Form.Control.Feedback>
         </Form.Group>
         <Form.Group controlId="article_body">
           <Form.Label>Body</Form.Label>
           <Form.Control as="textarea" onChange={this.onFieldChange('body')} value={this.state.article.body} required maxLength={4096} />
+          <Form.Control.Feedback type="valid">
+            Looks good!
+          </Form.Control.Feedback>
         </Form.Group>
         <div className="mt-3">
           <Button type="submit" disabled={this.state.submitting}>{this.props.submitButtonText || 'Create'}</Button>
