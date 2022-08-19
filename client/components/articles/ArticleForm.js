@@ -94,7 +94,7 @@ class ArticleForm extends React.Component {
         </Form.Group>
         <Form.Group controlId="article_body">
           <Form.Label>Body</Form.Label>
-          <Form.Control as="textarea" onChange={this.onFieldChange('body')} value={this.state.article.body} required maxLength={4096} />
+          <Form.Control as="textarea" onChange={this.onFieldChange('body')} value={this.state.article.body} required maxLength={4096} rows="7" />
           <Form.Control.Feedback type="valid">
             Looks good!
           </Form.Control.Feedback>

@@ -5,6 +5,8 @@ import Link from 'next/link';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import { PencilSquare } from 'react-bootstrap-icons';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export default function ArticleSlug(props) {
   // const router = useRouter();
@@ -35,7 +37,7 @@ export default function ArticleSlug(props) {
         <Card>
           <Card.Body>
             <Card.Title>{props.article.title}</Card.Title>
-            {props.article.body}
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{props.article.body}</ReactMarkdown>
           </Card.Body>
         </Card>
       )}
