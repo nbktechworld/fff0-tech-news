@@ -58,8 +58,9 @@ export default function ArticlesIndex(props) {
   )
 }
 
-export async function getServerSideProps() {
-  const response = await fetch('http://localhost:3001/articles');
+export async function getServerSideProps(context) {
+  const queryParameters = context.query.page ? `?page=${context.query.page}` : '';
+  const response = await fetch(`http://localhost:3001/articles${queryParameters}`);
 
   const props = {
     articles: {
