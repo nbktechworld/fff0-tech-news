@@ -1,9 +1,32 @@
-import { Card } from 'react-bootstrap';
+import { Card, Pagination } from 'react-bootstrap';
 import Link from 'next/link';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
+import { useRouter } from 'next/router';
 
 export default function ArticlesIndex(props) {
+  const router = useRouter();
+
+  const renderPagination = () => {
+    const paginationItems = [];
+
+    for (let page = 1; page <= props.articles.meta.totalPages; page++) {
+      paginationItems.push((
+        <Link href={`?page=${page}`} passHref key={page}>
+          <Pagination.Item active={page === parseInt(router.query.page, 10)}>
+            {page}
+          </Pagination.Item>
+        </Link>
+      ))
+    }
+
+    return (
+      <Pagination>
+        {paginationItems}
+      </Pagination>
+    )
+  };
+
   return (
     <>
       <div className="d-flex justify-content-between mb-2">
@@ -20,7 +43,7 @@ export default function ArticlesIndex(props) {
         </Alert>
       )}
       <div>
-        {props.articles.map((article) => (
+        {props.articles.items.map((article) => (
           <Card className="mb-2" key={article.id}>
             <Card.Body>
               <Link href={`/articles/${article.slug}`}>
@@ -30,6 +53,7 @@ export default function ArticlesIndex(props) {
           </Card>
         ))}
       </div>
+      {renderPagination()}
     </>
   )
 }
@@ -38,7 +62,10 @@ export async function getServerSideProps() {
   const response = await fetch('http://localhost:3001/articles');
 
   const props = {
-    articles: []
+    articles: {
+      meta: {},
+      items: []
+    }
   };
   if (response.ok) {
     props.articles = await response.json();
