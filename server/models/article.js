@@ -42,6 +42,10 @@ module.exports = (sequelize, DataTypes) => {
         len: [1, 4096]
       },
     },
+    thumbnailUrl: {
+      allowNull: true,
+      type: DataTypes.STRING(4096),
+    },
   }, {
     sequelize,
     modelName: 'Article',

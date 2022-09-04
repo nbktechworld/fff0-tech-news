@@ -1,7 +1,7 @@
 const db = require('../models');
 const filterFields = require('../utilities/filterFields');
 
-const permittedFields = ['slug', 'title', 'body'];
+const permittedFields = ['slug', 'title', 'body', 'thumbnailUrl'];
 
 
 async function getArticles (req, res, next) {

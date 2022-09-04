@@ -48,7 +48,7 @@ export default function ArticlesIndex(props) {
           <Card className="mb-2" key={article.id}>
             <Card.Body className="d-flex">
               <div className="me-3">
-                <Image src="/thumbnail_placeholder.png" alt="Thumbnail Placeholder" width="128" height="96" />
+                <Image src={article.thumbnailUrl || "/thumbnail_placeholder.png"} alt="Thumbnail Placeholder" width="128" height="96" />
               </div>
               <Link href={`/articles/${article.slug}`}>
                 <a>{article.title}</a>
