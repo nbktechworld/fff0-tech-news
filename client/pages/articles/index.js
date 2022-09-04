@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 export default function ArticlesIndex(props) {
   const router = useRouter();
@@ -45,8 +46,10 @@ export default function ArticlesIndex(props) {
       <div>
         {props.articles.items.map((article) => (
           <Card className="mb-2" key={article.id}>
-            <Card.Body>
-              <img src="/thumbnail_placeholder.png" alt="Thumbnail Placeholder" width="128" height="96" className="me-3" />
+            <Card.Body className="d-flex">
+              <div className="me-3">
+                <Image src="/thumbnail_placeholder.png" alt="Thumbnail Placeholder" width="128" height="96" />
+              </div>
               <Link href={`/articles/${article.slug}`}>
                 <a>{article.title}</a>
               </Link>
