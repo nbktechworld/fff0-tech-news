@@ -9,6 +9,7 @@ app.use(cors({
 }));
 app.use(express.json())
 
+app.use('/assets', express.static('public'))
 // Define the routes (API endpoints)
 defineRoutes(app);
 
