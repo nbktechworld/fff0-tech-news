@@ -46,6 +46,7 @@ export default function ArticlesIndex(props) {
         {props.articles.items.map((article) => (
           <Card className="mb-2" key={article.id}>
             <Card.Body>
+              <img src="/thumbnail_placeholder.png" alt="Thumbnail Placeholder" width="128" height="96" className="me-3" />
               <Link href={`/articles/${article.slug}`}>
                 <a>{article.title}</a>
               </Link>
