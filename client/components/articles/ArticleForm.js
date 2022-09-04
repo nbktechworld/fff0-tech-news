@@ -23,6 +23,7 @@ class ArticleForm extends React.Component {
       slug: this.props.article ? this.props.article.slug : '',
       title: this.props.article ? this.props.article.title : '',
       body: this.props.article ? this.props.article.body : '',
+      thumbnailUrl: this.props.article ? this.props.article.thumbnailUrl : '',
     }
   }
 
@@ -98,6 +99,10 @@ class ArticleForm extends React.Component {
           <Form.Control.Feedback type="valid">
             Looks good!
           </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group controlId="article_thumbnailUrl">
+          <Form.Label>Thumbnail URL</Form.Label>
+          <Form.Control type="text" onChange={this.onFieldChange('thumbnailUrl')} value={this.state.article.thumbnailUrl} maxLength={4096} />
         </Form.Group>
         <div className="mt-3">
           <Button type="submit" disabled={this.state.submitting}>{this.props.submitButtonText || 'Create'}</Button>
