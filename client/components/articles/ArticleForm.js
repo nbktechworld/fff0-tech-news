@@ -2,6 +2,7 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
+import Image from 'next/image';
 
 class ArticleForm extends React.Component {
   constructor(props) {
@@ -78,6 +79,20 @@ class ArticleForm extends React.Component {
     };
   }
 
+  hasThumbnail() {
+    if (!this.state.article.thumbnailUrl) {
+      return false;
+    }
+    if (this.state.article.thumbnailUrl.startsWith('/')) {
+      return true;
+    }
+    if (/^https?:\/\//.test(this.state.article.thumbnailUrl)) {
+      return true;
+    }
+
+    return false;
+  }
+
   render() {
     return (
       <Form onSubmit={this.onSubmit} noValidate validated={this.state.validated}>
@@ -104,6 +119,13 @@ class ArticleForm extends React.Component {
           <Form.Label>Thumbnail URL</Form.Label>
           <Form.Control type="text" onChange={this.onFieldChange('thumbnailUrl')} value={this.state.article.thumbnailUrl} maxLength={4096} />
         </Form.Group>
+        <div>
+          <div>Preview</div>
+          {!this.hasThumbnail() && (
+            <p>There is no thumbnail.</p>
+          )}
+          <Image src={this.hasThumbnail() ? this.state.article.thumbnailUrl : '/thumbnail_placeholder.png'} width="128" height="96" alt="Thumbnail Preview" />
+        </div>
         <div className="mt-3">
           <Button type="submit" disabled={this.state.submitting}>{this.props.submitButtonText || 'Create'}</Button>
           <Button className="ms-2" type="button" onClick={this.onResetClick} disabled={this.state.submitting} variant="secondary">Reset Form</Button>
