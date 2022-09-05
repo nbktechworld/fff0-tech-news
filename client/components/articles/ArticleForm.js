@@ -117,7 +117,7 @@ class ArticleForm extends React.Component {
         </Form.Group>
         <Form.Group controlId="article_thumbnailUrl">
           <Form.Label>Thumbnail URL</Form.Label>
-          <Form.Control type="text" onChange={this.onFieldChange('thumbnailUrl')} value={this.state.article.thumbnailUrl} maxLength={4096} />
+          <Form.Control type="text" onBlur={this.onFieldChange('thumbnailUrl')} defaultValue={this.state.article.thumbnailUrl} maxLength={4096} />
         </Form.Group>
         <div>
           <div>Preview</div>
