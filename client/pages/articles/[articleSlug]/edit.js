@@ -4,7 +4,7 @@ import ArticleForm from "../../../components/articles/ArticleForm";
 import { withRouter } from 'next/router';
 import Link from 'next/link';
 import Alert from 'react-bootstrap/Alert';
-import ThumbnailForm from "../../../components/ThumbnailForm";
+import ThumbnailForm from "../../../components/articles/ThumbnailForm";
 
 class ArticleEdit extends React.Component {
   constructor(props) {

@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const db = require('../models');
 const filterFields = require('../utilities/filterFields');
 
@@ -97,9 +99,55 @@ async function updateArticle(req, res) {
   res.send(updatedArticle);
 }
 
+async function updateArticleImage(req, res) {
+  // Update our database with metadata
+  const article = await db.Article.findOne({
+    where: {
+      slug: req.params.articleSlug
+    }
+  });
+
+  if (!article) {
+    if (req.file) {
+      const oldPath = path.join(__dirname, '..', 'uploads', req.file.filename);
+      // Remove the file that was received
+      fs.rmSync(oldPath);
+    }
+
+    return res.status(404).send({ error: 'Not Found' });
+  }
+
+  // Validate the file
+  // For now: If bad, delete the file from uploads (add validations, etc to your liking here)
+  if (!req.file) {
+    return res.status(422).send({ error: 'Unprocessable Entity' });
+  }
+
+  // Store the file (right now we just move to public/ directory)
+  const oldPath = path.join(__dirname, '..', 'uploads', req.file.filename);
+  const newPath = path.join(__dirname, '..', 'public', 'images', req.file.filename)
+  // left as exercise: handle errors
+  try {
+    fs.renameSync(oldPath, newPath);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({ error: 'Internal Server Error' });
+  }
+
+  const thumbnailUrl = `http://localhost:3001/assets/images/${req.file.filename}`;
+  await article.update({
+    thumbnailUrl
+  });
+
+  res.send({
+    thumbnailUrl
+  });
+}
+
 module.exports = {
   getArticles,
   getArticle,
   createArticle,
   updateArticle,
+  updateArticleImage,
 };
