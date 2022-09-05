@@ -4,6 +4,7 @@ import ArticleForm from "../../../components/articles/ArticleForm";
 import { withRouter } from 'next/router';
 import Link from 'next/link';
 import Alert from 'react-bootstrap/Alert';
+import ThumbnailForm from "../../../components/ThumbnailForm";
 
 class ArticleEdit extends React.Component {
   constructor(props) {
@@ -60,12 +61,16 @@ class ArticleEdit extends React.Component {
         {this.props.articleError ? (
           <Alert variant="danger">{this.props.articleError}</Alert>
         ) : (
-          <ArticleForm
-            onSubmit={this.onSubmit}
-            onSuccess={this.onSuccess}
-            submitButtonText="Update"
-            article={this.props.article}
-          />
+          <>
+            <ArticleForm
+              onSubmit={this.onSubmit}
+              onSuccess={this.onSuccess}
+              submitButtonText="Update"
+              article={this.props.article}
+            />
+            <h2 className="mt-3">Article Thumbnail</h2>
+            <ThumbnailForm article={this.props.article} />
+          </>
         )}
       </>
     )
