@@ -126,6 +126,7 @@ async function updateArticleImage(req, res) {
   // Store the file (right now we just move to public/ directory)
   const oldPath = path.join(__dirname, '..', 'uploads', req.file.filename);
   const newPath = path.join(__dirname, '..', 'public', 'images', req.file.filename)
+
   // left as exercise: handle errors
   try {
     fs.renameSync(oldPath, newPath);
@@ -134,6 +135,11 @@ async function updateArticleImage(req, res) {
     return res.status(500).send({ error: 'Internal Server Error' });
   }
 
+  if (article.thumbnailUrl) {
+    const thumbnailFilename = article.thumbnailUrl.replace('http://localhost:3001/assets/images/', '');
+    const oldPublicPath = path.join(__dirname, '..', 'public', 'images', thumbnailFilename);
+    fs.rmSync(oldPublicPath);
+  }
   const thumbnailUrl = `http://localhost:3001/assets/images/${req.file.filename}`;
   await article.update({
     thumbnailUrl

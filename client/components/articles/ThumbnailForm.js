@@ -41,7 +41,7 @@ class ThumbnailForm extends React.Component {
 
   render() {
     return (
-      <Form method="POST" action={`http://localhost:3001/articles/${this.articleSlug}/images`} enctype="multipart/form-data">
+      <Form method="POST" action={`http://localhost:3001/articles/${this.articleSlug}/images`} encType="multipart/form-data">
         <Form.Group controlId="article_thumbnailUrl">
           <Form.Label>Thumbnail</Form.Label>
           <Form.Control type="file" name="articleImage" onChange={this.onThumbnailImageChange} />
