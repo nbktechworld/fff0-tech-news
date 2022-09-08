@@ -12,6 +12,7 @@ class ThumbnailForm extends React.Component {
       selectedFile: null,
     };
 
+    this.onSubmit = this.onSubmit.bind(this);
     this.onThumbnailImageChange = this.onThumbnailImageChange.bind(this);
   }
 
@@ -33,6 +34,35 @@ class ThumbnailForm extends React.Component {
     return false;
   }
 
+  async onSubmit(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData();
+    const fileInput = form[0];
+
+    if (fileInput.files.length === 0) {
+      return;
+    }
+
+    formData.append(fileInput.name, fileInput.files[0]);
+    const response = await fetch(form.action, {
+      method: form.method,
+      body: formData
+    });
+
+    if (response.ok) {
+      const responseJson = await response.json();
+      this.setState({
+        selectedFile: null
+      }, () => {
+        this.props.onSuccess(responseJson);
+      })
+    }
+    else {
+      // handle errors here
+    }
+  }
+
   onThumbnailImageChange(event) {
     this.setState({
       selectedFile: event.target.files[0]
@@ -41,7 +71,7 @@ class ThumbnailForm extends React.Component {
 
   render() {
     return (
-      <Form method="POST" action={`http://localhost:3001/articles/${this.articleSlug}/images`} encType="multipart/form-data">
+      <Form method="POST" action={`http://localhost:3001/articles/${this.articleSlug}/images`} encType="multipart/form-data" onSubmit={this.onSubmit}>
         <Form.Group controlId="article_thumbnailUrl">
           <Form.Label>Thumbnail</Form.Label>
           <Form.Control type="file" name="articleImage" onChange={this.onThumbnailImageChange} />

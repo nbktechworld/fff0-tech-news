@@ -10,10 +10,13 @@ class ArticleEdit extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      article: props.article
+    };
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onSuccess = this.onSuccess.bind(this);
+    this.onThumbnailFormSuccess = this.onThumbnailFormSuccess.bind(this);
   }
 
   get articleSlug() {
@@ -50,6 +53,15 @@ class ArticleEdit extends React.Component {
     this.props.showAppNotification('Article updated successfully!');
   }
 
+  onThumbnailFormSuccess({ thumbnailUrl }) {
+    this.setState({
+      article: {
+        ...this.state.article,
+        thumbnailUrl,
+      }
+    });
+  }
+
   render() {
     return (
       <>
@@ -66,10 +78,13 @@ class ArticleEdit extends React.Component {
               onSubmit={this.onSubmit}
               onSuccess={this.onSuccess}
               submitButtonText="Update"
-              article={this.props.article}
+              article={this.state.article}
             />
             <h2 className="mt-3">Article Thumbnail</h2>
-            <ThumbnailForm article={this.props.article} />
+            <ThumbnailForm
+              article={this.state.article}
+              onSuccess={this.onThumbnailFormSuccess}
+            />
           </>
         )}
       </>
