@@ -12,6 +12,8 @@ class ThumbnailForm extends React.Component {
       selectedFile: null,
     };
 
+    this.fileInput = React.createRef();
+
     this.onSubmit = this.onSubmit.bind(this);
     this.onThumbnailImageChange = this.onThumbnailImageChange.bind(this);
   }
@@ -38,9 +40,9 @@ class ThumbnailForm extends React.Component {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData();
-    const fileInput = form[0];
+    const fileInput = this.fileInput.current;
 
-    if (fileInput.files.length === 0) {
+    if (!fileInput || fileInput.files.length === 0) {
       return;
     }
 
@@ -52,6 +54,7 @@ class ThumbnailForm extends React.Component {
 
     if (response.ok) {
       const responseJson = await response.json();
+      fileInput.value = ''
       this.setState({
         selectedFile: null
       }, () => {
@@ -70,11 +73,13 @@ class ThumbnailForm extends React.Component {
   }
 
   render() {
+    const selectedFile = this.fileInput.current && this.fileInput.current.files.length > 0 ? this.fileInput.current.files[0] : null;
+
     return (
       <Form method="POST" action={`http://localhost:3001/articles/${this.articleSlug}/images`} encType="multipart/form-data" onSubmit={this.onSubmit}>
         <Form.Group controlId="article_thumbnailUrl">
           <Form.Label>Thumbnail</Form.Label>
-          <Form.Control type="file" name="articleImage" onChange={this.onThumbnailImageChange} />
+          <Form.Control type="file" name="articleImage" onChange={this.onThumbnailImageChange} ref={this.fileInput} />
         </Form.Group>
         <div className="mb-2 d-flex">
           <div>
@@ -84,10 +89,10 @@ class ThumbnailForm extends React.Component {
             )}
             <Image src={this.hasThumbnail() ? this.props.article.thumbnailUrl : '/thumbnail_placeholder.png'} width="128" height="96" alt="Thumbnail Preview" />
           </div>
-          {this.state.selectedFile && (
+          {selectedFile && (
             <div className="ms-3">
               <div>Replace with (After upload)</div>
-              <Image src={URL.createObjectURL(this.state.selectedFile)} width="128" height="96" alt="Replacement Thumbnail Preview" />
+              <Image src={URL.createObjectURL(selectedFile)} width="128" height="96" alt="Replacement Thumbnail Preview" />
             </div>
           )}
         </div>
