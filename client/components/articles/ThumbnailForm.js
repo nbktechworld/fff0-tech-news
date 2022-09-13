@@ -12,6 +12,7 @@ class ThumbnailForm extends React.Component {
     this.state = {
       selectedFile: null,
       submissionMessage: '',
+      submitting: false,
     };
 
     this.fileInput = React.createRef();
@@ -43,6 +44,7 @@ class ThumbnailForm extends React.Component {
     const form = event.currentTarget;
     this.setState({
       submissionMessage: '',
+      submitting: true,
     }, async () => {
       const formData = new FormData();
       const fileInput = this.fileInput.current;
@@ -57,19 +59,23 @@ class ThumbnailForm extends React.Component {
         body: formData
       });
 
-      if (response.ok) {
-        const responseJson = await response.json();
-        fileInput.value = ''
-        this.setState({
-          selectedFile: null,
-          submissionMessage: 'Thumbnail was saved!',
-        }, () => {
-          this.props.onSuccess(responseJson);
-        })
-      }
-      else {
-        // handle errors here
-      }
+      this.setState({
+        submitting: false
+      }, async () => {
+        if (response.ok) {
+          const responseJson = await response.json();
+          fileInput.value = ''
+          this.setState({
+            selectedFile: null,
+            submissionMessage: 'Thumbnail was saved!',
+          }, () => {
+            this.props.onSuccess(responseJson);
+          })
+        }
+        else {
+          // handle errors here
+        }
+      })
     });
   }
 
@@ -104,7 +110,7 @@ class ThumbnailForm extends React.Component {
           )}
         </div>
         <div className="d-flex align-items-center">
-          <Button type="submit">Save Thumbnail</Button>
+          <Button type="submit" disabled={this.state.submitting}>Save Thumbnail</Button>
           {this.state.submissionMessage && (
             <span className="ms-2"><CheckCircleFill /> {this.state.submissionMessage}</span>
           )}
