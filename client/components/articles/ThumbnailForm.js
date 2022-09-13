@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Image from 'next/image';
 import { withRouter } from 'next/router'
+import { CheckCircleFill } from 'react-bootstrap-icons';
 
 class ThumbnailForm extends React.Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class ThumbnailForm extends React.Component {
 
     this.state = {
       selectedFile: null,
+      submissionMessage: '',
     };
 
     this.fileInput = React.createRef();
@@ -39,31 +41,36 @@ class ThumbnailForm extends React.Component {
   async onSubmit(event) {
     event.preventDefault();
     const form = event.currentTarget;
-    const formData = new FormData();
-    const fileInput = this.fileInput.current;
+    this.setState({
+      submissionMessage: '',
+    }, async () => {
+      const formData = new FormData();
+      const fileInput = this.fileInput.current;
 
-    if (!fileInput || fileInput.files.length === 0) {
-      return;
-    }
+      if (!fileInput || fileInput.files.length === 0) {
+        return;
+      }
 
-    formData.append(fileInput.name, fileInput.files[0]);
-    const response = await fetch(form.action, {
-      method: form.method,
-      body: formData
+      formData.append(fileInput.name, fileInput.files[0]);
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: formData
+      });
+
+      if (response.ok) {
+        const responseJson = await response.json();
+        fileInput.value = ''
+        this.setState({
+          selectedFile: null,
+          submissionMessage: 'Thumbnail was saved!',
+        }, () => {
+          this.props.onSuccess(responseJson);
+        })
+      }
+      else {
+        // handle errors here
+      }
     });
-
-    if (response.ok) {
-      const responseJson = await response.json();
-      fileInput.value = ''
-      this.setState({
-        selectedFile: null
-      }, () => {
-        this.props.onSuccess(responseJson);
-      })
-    }
-    else {
-      // handle errors here
-    }
   }
 
   onThumbnailImageChange(event) {
@@ -96,7 +103,12 @@ class ThumbnailForm extends React.Component {
             </div>
           )}
         </div>
-        <Button type="submit">Save Thumbnail</Button>
+        <div className="d-flex align-items-center">
+          <Button type="submit">Save Thumbnail</Button>
+          {this.state.submissionMessage && (
+            <span className="ms-2"><CheckCircleFill /> {this.state.submissionMessage}</span>
+          )}
+        </div>
       </Form>
     )
   }
