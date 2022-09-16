@@ -1,7 +1,8 @@
 module.exports = {
   images: {
     domains: [
-      'localhost'
+      'localhost',
+      'fff0-tech-news.s3.amazonaws.com',
     ]
   },
   async redirects() {
