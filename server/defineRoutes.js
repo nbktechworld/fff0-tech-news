@@ -12,7 +12,12 @@ function tryCatch(handler) {
   };
 }
 
-const processFile = multer({ dest: 'uploads' });
+const processFile = multer({
+  dest: 'uploads',
+  limits: {
+    fileSize: 1024 * 1024 * 5 // 5 MiB
+  }
+});
 
 module.exports = function(app) {
   app.get('/articles', tryCatch(ArticleHandler.getArticles));
