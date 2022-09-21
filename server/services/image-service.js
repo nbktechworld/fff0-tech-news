@@ -10,6 +10,10 @@ module.exports = class ImageService {
     this.bucket = 'fff0-tech-news';
   }
 
+  isValid(file) {
+    return file.mimetype.startsWith('image/');
+  }
+
   async send(file) {
     const key = `assets/images/${file.filename}`;
     const filePath = path.join(file.destination, file.filename);

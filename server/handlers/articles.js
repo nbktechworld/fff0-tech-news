@@ -109,19 +109,15 @@ async function updateArticleImage(req, res) {
     }
   });
 
-  if (!article) {
+  const imageService = new ImageService();
+  // Validate the file
+  // For now: If bad, delete the file from uploads (add validations, etc to your liking here)
+  if (!article || !req.file || !imageService.isValid(req.file)) {
     if (req.file) {
       const oldPath = path.join(__dirname, '..', 'uploads', req.file.filename);
       // Remove the file that was received
-      fs.rmSync(oldPath);
+      fs.promises.rm(oldPath);
     }
-
-    return res.status(404).send({ error: 'Not Found' });
-  }
-
-  // Validate the file
-  // For now: If bad, delete the file from uploads (add validations, etc to your liking here)
-  if (!req.file) {
     return res.status(422).send({ error: 'Unprocessable Entity' });
   }
 
@@ -129,7 +125,6 @@ async function updateArticleImage(req, res) {
   const oldPath = path.join(__dirname, '..', 'uploads', req.file.filename);
 
   // left as exercise: handle errors
-  const imageService = new ImageService();
 
   let thumbnailUrl;
   try {

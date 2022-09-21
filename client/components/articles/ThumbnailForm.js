@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Image from 'next/image';
 import { withRouter } from 'next/router'
-import { CheckCircleFill } from 'react-bootstrap-icons';
+import { CheckCircleFill, XCircleFill } from 'react-bootstrap-icons';
 
 class ThumbnailForm extends React.Component {
   constructor(props) {
@@ -12,6 +12,7 @@ class ThumbnailForm extends React.Component {
     this.state = {
       selectedFile: null,
       submissionMessage: '',
+      submissionError: '',
       submitting: false,
     };
 
@@ -74,6 +75,10 @@ class ThumbnailForm extends React.Component {
         }
         else {
           // handle errors here
+          const responseJson = await response.json();
+          this.setState({
+            submissionError: responseJson.error,
+          });
         }
       })
     });
@@ -92,7 +97,7 @@ class ThumbnailForm extends React.Component {
       <Form method="POST" action={`http://localhost:3001/articles/${this.articleSlug}/images`} encType="multipart/form-data" onSubmit={this.onSubmit}>
         <Form.Group controlId="article_thumbnailUrl">
           <Form.Label>Thumbnail</Form.Label>
-          <Form.Control type="file" name="articleImage" onChange={this.onThumbnailImageChange} ref={this.fileInput} />
+          <Form.Control type="file" name="articleImage" onChange={this.onThumbnailImageChange} ref={this.fileInput} accept="image/*" />
         </Form.Group>
         <div className="mb-2 d-flex">
           <div>
@@ -113,6 +118,9 @@ class ThumbnailForm extends React.Component {
           <Button type="submit" disabled={this.state.submitting}>Save Thumbnail</Button>
           {this.state.submissionMessage && (
             <span className="ms-2"><CheckCircleFill /> {this.state.submissionMessage}</span>
+          )}
+          {this.state.submissionError && (
+            <span className="ms-2"><XCircleFill /> {this.state.submissionError}</span>
           )}
         </div>
       </Form>
