@@ -1,4 +1,5 @@
 const fs = require('fs');
+const mime = require('mime');
 const path = require('path');
 const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 
@@ -15,7 +16,8 @@ module.exports = class ImageService {
   }
 
   async send(file) {
-    const key = `assets/images/${file.filename}`;
+    const fileExtension = mime.getExtension(file.mimetype);
+    const key = `assets/images/${file.filename}.${fileExtension}`;
     const filePath = path.join(file.destination, file.filename);
     const fileBody = fs.createReadStream(filePath);
     await this.s3Client.send(new PutObjectCommand({
