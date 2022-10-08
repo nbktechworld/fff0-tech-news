@@ -25,7 +25,7 @@ async function getArticles (req, res, next) {
   const articles = result.rows;
   const totalPages = Math.ceil(result.count / pageSize);
 
-  if (page > totalPages) {
+  if (result.count > 0 && page > totalPages) {
     return res.status(422).send({ error: 'Unprocessable Entity' });
   }
 

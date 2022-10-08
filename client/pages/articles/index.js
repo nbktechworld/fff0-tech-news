@@ -44,6 +44,9 @@ export default function ArticlesIndex(props) {
         </Alert>
       )}
       <div>
+        {props.articles.items.length === 0 && (
+          <p>There are no articles.</p>
+        )}
         {props.articles.items.map((article) => (
           <Card className="mb-2" key={article.id}>
             <Card.Body className="d-flex">
