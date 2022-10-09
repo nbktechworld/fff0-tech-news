@@ -74,6 +74,8 @@ function App({ Component, pageProps }) {
     <>
       <Head>
         <title>Tech News</title>
+        <meta name="description" content="Technology news from all over the world." />
+        <meta name="robots" content="index,follow" />
       </Head>
       {showNotification && (
         <Toast className="position-fixed app-notification" onClose={onNotificationClose}>

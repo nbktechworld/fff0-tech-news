@@ -16,6 +16,7 @@ export default function ArticleSlug(props) {
     <>
       <Head>
         <title>{props.article.title}</title>
+        <meta name="description" content={props.article.excerpt} />
       </Head>
       <div className="d-flex justify-content-between">
         <Breadcrumb>
