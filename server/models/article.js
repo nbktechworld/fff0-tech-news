@@ -46,6 +46,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       type: DataTypes.STRING(4096),
     },
+    excerpt: {
+      allowNull: false,
+      type: DataTypes.STRING(256),
+    },
   }, {
     sequelize,
     modelName: 'Article',

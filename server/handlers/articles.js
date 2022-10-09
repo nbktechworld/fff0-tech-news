@@ -5,7 +5,13 @@ const filterFields = require('../utilities/filterFields');
 const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const ImageService = require('../services/image-service');
 
-const permittedFields = ['slug', 'title', 'body', 'thumbnailUrl'];
+const permittedFields = [
+  'slug',
+  'title',
+  'body',
+  'thumbnailUrl',
+  'excerpt',
+];
 
 
 async function getArticles (req, res, next) {
