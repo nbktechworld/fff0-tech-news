@@ -7,12 +7,16 @@ import Button from 'react-bootstrap/Button';
 import { PencilSquare } from 'react-bootstrap-icons';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import Head from 'next/head';
 
 export default function ArticleSlug(props) {
   // const router = useRouter();
 
   return (
     <>
+      <Head>
+        <title>{props.article.title}</title>
+      </Head>
       <div className="d-flex justify-content-between">
         <Breadcrumb>
           <Breadcrumb.Item linkAs={Link} href="/articles">

@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import Toast from 'react-bootstrap/Toast';
 import { ExclamationCircle } from 'react-bootstrap-icons';
+import Head from 'next/head';
 
 // When listening to router transitions, if you use class-based:
 // define componentDidMount and subscribe to events there
@@ -71,6 +72,9 @@ function App({ Component, pageProps }) {
 
   return (
     <>
+      <Head>
+        <title>Tech News</title>
+      </Head>
       {showNotification && (
         <Toast className="position-fixed app-notification" onClose={onNotificationClose}>
           <Toast.Header>
