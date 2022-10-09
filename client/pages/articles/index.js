@@ -50,7 +50,7 @@ export default function ArticlesIndex(props) {
         {props.articles.items.map((article) => (
           <Card className="mb-2" key={article.id}>
             <Card.Body className="d-flex">
-              <div className="me-3">
+              <div className="me-3 articles-index__thumbnail-container">
                 <Image src={article.thumbnailUrl || "/thumbnail_placeholder.png"} alt="Thumbnail Placeholder" width="128" height="96" />
               </div>
               <div>
