@@ -53,9 +53,12 @@ export default function ArticlesIndex(props) {
               <div className="me-3">
                 <Image src={article.thumbnailUrl || "/thumbnail_placeholder.png"} alt="Thumbnail Placeholder" width="128" height="96" />
               </div>
-              <Link href={`/articles/${article.slug}`}>
-                <a>{article.title}</a>
-              </Link>
+              <div>
+                <Link href={`/articles/${article.slug}`}>
+                  <a>{article.title}</a>
+                </Link>
+                <div>{article.excerpt}</div>
+              </div>
             </Card.Body>
           </Card>
         ))}

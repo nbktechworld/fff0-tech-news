@@ -22,6 +22,7 @@ class ArticleForm extends React.Component {
     return {
       slug: this.props.article ? this.props.article.slug : '',
       title: this.props.article ? this.props.article.title : '',
+      excerpt: this.props.article ? this.props.article.excerpt : '',
       body: this.props.article ? this.props.article.body : '',
       thumbnailUrl: this.props.article ? this.props.article.thumbnailUrl : '',
     }
@@ -92,6 +93,10 @@ class ArticleForm extends React.Component {
           <Form.Control.Feedback type="invalid">
             Keep the title between 1 and 128 characters.
           </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group controlId="article_excerpt">
+          <Form.Label>Excerpt</Form.Label>
+          <Form.Control as="textarea" onChange={this.onFieldChange('excerpt')} value={this.state.article.excerpt} required maxLength={256} rows="3" />
         </Form.Group>
         <Form.Group controlId="article_body">
           <Form.Label>Body</Form.Label>

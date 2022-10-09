@@ -37,6 +37,7 @@ export default function ArticleSlug(props) {
         <Card>
           <Card.Body>
             <Card.Title>{props.article.title}</Card.Title>
+            <Card.Subtitle className="mb-2 text-muted">{props.excerpt}</Card.Subtitle>
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{props.article.body}</ReactMarkdown>
           </Card.Body>
         </Card>
