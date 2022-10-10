@@ -17,6 +17,10 @@ export default function ArticleSlug(props) {
       <Head>
         <title>{props.article.title}</title>
         <meta name="description" content={props.article.excerpt} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={props.article.title} />
+        <meta name="twitter:description" content={props.article.excerpt} />
+        <meta name="twitter:image" content={props.article.thumbnailUrl || `${process.env.clientUrl}/thumbnail_placeholder.png`} />
       </Head>
       <div className="d-flex justify-content-between">
         <Breadcrumb>

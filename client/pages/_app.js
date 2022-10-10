@@ -70,12 +70,17 @@ function App({ Component, pageProps }) {
     }
   }, [router]);
 
+  const metaTitle = 'Tech News';
+  const metaDescription = "Technology news from all over the world.";
   return (
     <>
       <Head>
-        <title>Tech News</title>
-        <meta name="description" content="Technology news from all over the world." />
+        <title>{metaTitle}</title>
+        <meta name="description" content={metaDescription} />
         <meta name="robots" content="index,follow" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={metaTitle} />
+        <meta name="twitter:description" content={metaDescription} />
       </Head>
       {showNotification && (
         <Toast className="position-fixed app-notification" onClose={onNotificationClose}>

@@ -1,4 +1,7 @@
 module.exports = {
+  env: {
+    clientUrl: 'http://localhost:3000',
+  },
   images: {
     domains: [
       'localhost',
