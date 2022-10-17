@@ -12,6 +12,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import Toast from 'react-bootstrap/Toast';
 import { ExclamationCircle } from 'react-bootstrap-icons';
 import Head from 'next/head';
+import SEO from '../components/SEO';
 
 // When listening to router transitions, if you use class-based:
 // define componentDidMount and subscribe to events there
@@ -70,18 +71,17 @@ function App({ Component, pageProps }) {
     }
   }, [router]);
 
-  const metaTitle = 'Tech News';
-  const metaDescription = "Technology news from all over the world.";
   return (
     <>
-      <Head>
+      <SEO image="abc" />
+      {/* <Head>
         <title>{metaTitle}</title>
         <meta name="description" content={metaDescription} />
         <meta name="robots" content="index,follow" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={metaTitle} />
         <meta name="twitter:description" content={metaDescription} />
-      </Head>
+      </Head> */}
       {showNotification && (
         <Toast className="position-fixed app-notification" onClose={onNotificationClose}>
           <Toast.Header>

@@ -7,27 +7,19 @@ import Button from 'react-bootstrap/Button';
 import { PencilSquare } from 'react-bootstrap-icons';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import Head from 'next/head';
+import SEO from '../../components/SEO';
 
 export default function ArticleSlug(props) {
   // const router = useRouter();
   const metaImage = props.article.thumbnailUrl || `${process.env.clientUrl}/thumbnail_placeholder.png`;
   return (
     <>
-      <Head>
-        <title>{props.article.title}</title>
-        <meta name="description" content={props.article.excerpt} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={props.article.title} />
-        <meta name="twitter:description" content={props.article.excerpt} />
-        <meta name="twitter:image" content={metaImage} />
-
-        <meta property="og:type" content="article" />
-        <meta property="og:title" content={props.article.title} />
-        <meta property="og:description" content={props.article.excerpt} />
-        <meta property="og:image" content={metaImage} />
-        <meta property="og:url" content={process.env.clientUrl} />
-      </Head>
+      <SEO
+        title={props.article.title}
+        description={props.article.excerpt}
+        image={metaImage}
+        type="article"
+      />
       <div className="d-flex justify-content-between">
         <Breadcrumb>
           <Breadcrumb.Item linkAs={Link} href="/articles">
