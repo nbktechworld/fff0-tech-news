@@ -11,7 +11,7 @@ import Head from 'next/head';
 
 export default function ArticleSlug(props) {
   // const router = useRouter();
-
+  const metaImage = props.article.thumbnailUrl || `${process.env.clientUrl}/thumbnail_placeholder.png`;
   return (
     <>
       <Head>
@@ -20,7 +20,13 @@ export default function ArticleSlug(props) {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={props.article.title} />
         <meta name="twitter:description" content={props.article.excerpt} />
-        <meta name="twitter:image" content={props.article.thumbnailUrl || `${process.env.clientUrl}/thumbnail_placeholder.png`} />
+        <meta name="twitter:image" content={metaImage} />
+
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={props.article.title} />
+        <meta property="og:description" content={props.article.excerpt} />
+        <meta property="og:image" content={metaImage} />
+        <meta property="og:url" content={process.env.clientUrl} />
       </Head>
       <div className="d-flex justify-content-between">
         <Breadcrumb>
