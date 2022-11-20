@@ -5,7 +5,7 @@ import Alert from 'react-bootstrap/Alert';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { TypeH1 } from 'react-bootstrap-icons';
+import { TypeBold, TypeH1 } from 'react-bootstrap-icons';
 
 class ArticleForm extends React.Component {
   constructor(props) {
@@ -23,6 +23,7 @@ class ArticleForm extends React.Component {
     this.onResetClick = this.onResetClick.bind(this);
     this.onTogglePreview = this.onTogglePreview.bind(this);
     this.onHeadingClick = this.onHeadingClick.bind(this);
+    this.onBoldClick = this.onBoldClick.bind(this);
 
     this.bodyRef = React.createRef();
   }
@@ -92,6 +93,14 @@ class ArticleForm extends React.Component {
     });
   }
 
+  onBoldClick(event) {
+    const { selectionStart, selectionEnd, value } = this.bodyRef.current;
+
+    const newValue = value.slice(0, selectionStart) + '**' + value.slice(selectionStart, selectionEnd) + '**' + value.slice(selectionEnd);
+
+    this.changeField('body', newValue);
+  }
+
   onHeadingClick(event) {
     const { selectionStart } = this.bodyRef.current;
     const { value } = this.bodyRef.current;
@@ -146,6 +155,9 @@ class ArticleForm extends React.Component {
             <div>
               <Button variant="outline-secondary" size="sm" onClick={this.onHeadingClick}>
                 <TypeH1 />
+              </Button>
+              <Button variant="outline-secondary" size="sm" onClick={this.onBoldClick}>
+                <TypeBold />
               </Button>
             </div>
             <div>
