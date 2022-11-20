@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import Card from 'react-bootstrap/Card';
 import Link from 'next/link';
@@ -10,7 +9,6 @@ import remarkGfm from 'remark-gfm';
 import SEO from '../../components/SEO';
 
 export default function ArticleSlug(props) {
-  // const router = useRouter();
   const metaImage = props.article.thumbnailUrl || `${process.env.clientUrl}/thumbnail_placeholder.png`;
   return (
     <>

@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.scss';
 import './articles/index.scss';
+import '../components/articles/ArticleForm.scss';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import Link from 'next/link';
@@ -73,15 +74,7 @@ function App({ Component, pageProps }) {
 
   return (
     <>
-      <SEO image="abc" />
-      {/* <Head>
-        <title>{metaTitle}</title>
-        <meta name="description" content={metaDescription} />
-        <meta name="robots" content="index,follow" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={metaTitle} />
-        <meta name="twitter:description" content={metaDescription} />
-      </Head> */}
+      <SEO />
       {showNotification && (
         <Toast className="position-fixed app-notification" onClose={onNotificationClose}>
           <Toast.Header>

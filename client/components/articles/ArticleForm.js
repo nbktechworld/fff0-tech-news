@@ -2,6 +2,9 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
+import ToggleButton from 'react-bootstrap/ToggleButton';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 class ArticleForm extends React.Component {
   constructor(props) {
@@ -9,6 +12,7 @@ class ArticleForm extends React.Component {
 
     this.state = {
       article: this.getInitialArticleValues(),
+      showPreview: false,
       submissionError: null,
       submitting: false,
       validated: false,
@@ -16,6 +20,7 @@ class ArticleForm extends React.Component {
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onResetClick = this.onResetClick.bind(this);
+    this.onTogglePreview = this.onTogglePreview.bind(this);
   }
 
   getInitialArticleValues() {
@@ -79,6 +84,12 @@ class ArticleForm extends React.Component {
     };
   }
 
+  onTogglePreview(event) {
+    this.setState({
+      showPreview: !this.state.showPreview,
+    });
+  }
+
   render() {
     return (
       <Form onSubmit={this.onSubmit} noValidate validated={this.state.validated}>
@@ -100,7 +111,27 @@ class ArticleForm extends React.Component {
         </Form.Group>
         <Form.Group controlId="article_body">
           <Form.Label>Body</Form.Label>
-          <Form.Control as="textarea" onChange={this.onFieldChange('body')} value={this.state.article.body} required maxLength={4096} rows="7" />
+          <div className="d-flex justify-content-between mb-1">
+            <div></div>
+            <div>
+              <ToggleButton
+                type="checkbox"
+                variant="outline-secondary"
+                checked={this.state.showPreview}
+                onChange={this.onTogglePreview}
+                id="article-form-body-preview-toggle"
+              >
+                Preview
+              </ToggleButton>
+            </div>
+          </div>
+          {this.state.showPreview ? (
+            <ReactMarkdown remarkPlugins={[remarkGfm]} className="article-form__body-preview">
+              {this.state.article.body}
+            </ReactMarkdown>
+          ) : (
+            <Form.Control as="textarea" onChange={this.onFieldChange('body')} value={this.state.article.body} required maxLength={4096} rows="7" />
+          )}
           <Form.Control.Feedback type="valid">
             Looks good!
           </Form.Control.Feedback>
