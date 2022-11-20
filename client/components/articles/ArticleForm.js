@@ -5,7 +5,7 @@ import Alert from 'react-bootstrap/Alert';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { TypeBold, TypeH1 } from 'react-bootstrap-icons';
+import MarkdownToolbar from '../MarkdownToolbar';
 
 class ArticleForm extends React.Component {
   constructor(props) {
@@ -153,12 +153,13 @@ class ArticleForm extends React.Component {
           <Form.Label>Body</Form.Label>
           <div className="d-flex justify-content-between mb-1">
             <div>
-              <Button variant="outline-secondary" size="sm" onClick={this.onHeadingClick}>
+              {/* <Button variant="outline-secondary" size="sm" onClick={this.onHeadingClick}>
                 <TypeH1 />
               </Button>
               <Button variant="outline-secondary" size="sm" onClick={this.onBoldClick}>
                 <TypeBold />
-              </Button>
+              </Button> */}
+              <MarkdownToolbar htmlFor="article_body" />
             </div>
             <div>
               <ToggleButton
