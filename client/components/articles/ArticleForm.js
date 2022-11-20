@@ -5,6 +5,7 @@ import Alert from 'react-bootstrap/Alert';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { TypeH1 } from 'react-bootstrap-icons';
 
 class ArticleForm extends React.Component {
   constructor(props) {
@@ -21,6 +22,9 @@ class ArticleForm extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.onResetClick = this.onResetClick.bind(this);
     this.onTogglePreview = this.onTogglePreview.bind(this);
+    this.onHeadingClick = this.onHeadingClick.bind(this);
+
+    this.bodyRef = React.createRef();
   }
 
   getInitialArticleValues() {
@@ -75,13 +79,40 @@ class ArticleForm extends React.Component {
 
   onFieldChange(fieldName) {
     return (event) => {
-      this.setState({
-        article: {
-          ...this.state.article,
-          [fieldName]: event.target.value
-        }
-      });
+      this.changeField(fieldName, event.target.value);
     };
+  }
+
+  changeField(fieldName, value) {
+    this.setState({
+      article: {
+        ...this.state.article,
+        [fieldName]: value
+      }
+    });
+  }
+
+  onHeadingClick(event) {
+    const { selectionStart } = this.bodyRef.current;
+    const { value } = this.bodyRef.current;
+
+    let insertionIndex = selectionStart;
+    let runningIndex = selectionStart;
+
+    //  0123 4 56
+    // "abc\nd'ef"
+    while (runningIndex > 0) {
+      runningIndex--;
+      if (value.charAt(runningIndex) === '\n') {
+        break;
+      }
+      insertionIndex = runningIndex;
+    }
+
+    const newValue = value.slice(0, insertionIndex) + '# ' + value.slice(insertionIndex);
+
+    this.changeField('body', newValue);
+    this.bodyRef.current.focus();
   }
 
   onTogglePreview(event) {
@@ -112,7 +143,11 @@ class ArticleForm extends React.Component {
         <Form.Group controlId="article_body">
           <Form.Label>Body</Form.Label>
           <div className="d-flex justify-content-between mb-1">
-            <div></div>
+            <div>
+              <Button variant="outline-secondary" size="sm" onClick={this.onHeadingClick}>
+                <TypeH1 />
+              </Button>
+            </div>
             <div>
               <ToggleButton
                 type="checkbox"
@@ -130,7 +165,7 @@ class ArticleForm extends React.Component {
               {this.state.article.body}
             </ReactMarkdown>
           ) : (
-            <Form.Control as="textarea" onChange={this.onFieldChange('body')} value={this.state.article.body} required maxLength={4096} rows="7" />
+            <Form.Control as="textarea" onChange={this.onFieldChange('body')} value={this.state.article.body} required maxLength={4096} rows="7" ref={this.bodyRef} />
           )}
           <Form.Control.Feedback type="valid">
             Looks good!
