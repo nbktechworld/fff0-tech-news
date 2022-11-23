@@ -6,8 +6,7 @@ import ToggleButton from 'react-bootstrap/ToggleButton';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import MarkdownToolbar from '../MarkdownToolbar';
-import { Image } from 'react-bootstrap-icons';
-import Modal from 'react-bootstrap/Modal';
+import AttachImageButton from './AttachImageButton';
 
 class ArticleForm extends React.Component {
   constructor(props) {
@@ -15,7 +14,6 @@ class ArticleForm extends React.Component {
 
     this.state = {
       article: this.getInitialArticleValues(),
-      showAttachImageModal: false,
       showPreview: false,
       submissionError: null,
       submitting: false,
@@ -27,8 +25,6 @@ class ArticleForm extends React.Component {
     this.onTogglePreview = this.onTogglePreview.bind(this);
     this.onHeadingClick = this.onHeadingClick.bind(this);
     this.onBoldClick = this.onBoldClick.bind(this);
-    this.onAttachImageClick = this.onAttachImageClick.bind(this);
-    this.hideAttachImageModal = this.hideAttachImageModal.bind(this);
 
     this.bodyRef = React.createRef();
   }
@@ -98,18 +94,6 @@ class ArticleForm extends React.Component {
     });
   }
 
-  hideAttachImageModal() {
-    this.setState({
-      showAttachImageModal: false,
-    });
-  }
-
-  onAttachImageClick(event) {
-    this.setState({
-      showAttachImageModal: true
-    });
-  }
-
   onBoldClick(event) {
     const { selectionStart, selectionEnd, value } = this.bodyRef.current;
 
@@ -173,15 +157,7 @@ class ArticleForm extends React.Component {
               <MarkdownToolbar htmlFor="article_body" />
             </div>
             <div>
-              <Button className="me-2" onClick={this.onAttachImageClick}>
-                <Image /> Attach Image
-              </Button>
-              <Modal show={this.state.showAttachImageModal} onHide={this.hideAttachImageModal} centered>
-                <Modal.Header closeButton>
-                  Attach Image
-                </Modal.Header>
-                <Modal.Body>This is the modal</Modal.Body>
-              </Modal>
+              <AttachImageButton />
               <ToggleButton
                 type="checkbox"
                 variant="outline-secondary"
