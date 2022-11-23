@@ -153,12 +153,6 @@ class ArticleForm extends React.Component {
           <Form.Label>Body</Form.Label>
           <div className="d-flex justify-content-between mb-1">
             <div>
-              {/* <Button variant="outline-secondary" size="sm" onClick={this.onHeadingClick}>
-                <TypeH1 />
-              </Button>
-              <Button variant="outline-secondary" size="sm" onClick={this.onBoldClick}>
-                <TypeBold />
-              </Button> */}
               <MarkdownToolbar htmlFor="article_body" />
             </div>
             <div>
