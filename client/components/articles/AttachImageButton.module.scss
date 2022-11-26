@@ -1,6 +1,7 @@
 .attach-image-button {
   &__add-image {
     border: 1px dashed #000000;
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     justify-content: center;
