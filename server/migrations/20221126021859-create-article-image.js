@@ -25,6 +25,16 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+
+    await queryInterface.addConstraint('article_images', {
+      type: 'UNIQUE',
+      fields: ['article_id', 'image_id'],
+    });
+
+    await queryInterface.addConstraint('article_images', {
+      type: 'UNIQUE',
+      fields: ['image_id']
+    });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('article_images');
