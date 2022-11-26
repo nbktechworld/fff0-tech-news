@@ -14,12 +14,45 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Image.init({
-    filename: DataTypes.STRING,
-    mimetype: DataTypes.STRING,
-    size: DataTypes.INTEGER
+    filename: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      validate: {
+        isLength: {
+          min: 1,
+          max: 255,
+        },
+      },
+    },
+    mimetype: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      validate: {
+        isLength: {
+          min: 1,
+          max: 255,
+        },
+      },
+    },
+    originalFilename: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      validate: {
+        isLength: {
+          min: 1,
+          max: 255,
+        },
+      },
+    },
+    size: {
+      allowNull: false,
+      type: DataTypes.INTEGER
+    }
   }, {
     sequelize,
     modelName: 'Image',
+    underscored: true,
+    tableName: 'images',
   });
   return Image;
 };
