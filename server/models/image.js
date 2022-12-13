@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         through: models.ArticleImage,
         foreignKey: 'imageId',
         otherKey: 'articleId',
-        // as: 'articles'
+        as: 'articles'
       })
     }
   }
