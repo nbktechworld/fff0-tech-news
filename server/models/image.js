@@ -16,7 +16,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'imageId',
         otherKey: 'articleId',
         as: 'articles'
-      })
+      });
+
+      this.hasMany(models.ArticleImage, {
+        foreignKey: 'imageId',
+        as: 'articleImages',
+      });
     }
   }
   Image.init({
