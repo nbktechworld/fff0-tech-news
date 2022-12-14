@@ -94,7 +94,7 @@ class ThumbnailForm extends React.Component {
     const selectedFile = this.fileInput.current && this.fileInput.current.files.length > 0 ? this.fileInput.current.files[0] : null;
 
     return (
-      <Form method="POST" action={`http://localhost:3001/articles/${this.articleSlug}/images`} encType="multipart/form-data" onSubmit={this.onSubmit}>
+      <Form method="POST" action={`http://localhost:3001/articles/${this.articleSlug}/thumbnail-images`} encType="multipart/form-data" onSubmit={this.onSubmit}>
         <Form.Group controlId="article_thumbnailUrl">
           <Form.Label>Thumbnail</Form.Label>
           <Form.Control type="file" name="articleImage" onChange={this.onThumbnailImageChange} ref={this.fileInput} accept="image/*" />

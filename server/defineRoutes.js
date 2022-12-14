@@ -24,5 +24,6 @@ module.exports = function(app) {
   app.get('/articles/:articleSlug', tryCatch(ArticleHandler.getArticle));
   app.post('/articles', tryCatch(ArticleHandler.createArticle));
   app.put('/articles/:articleSlug', tryCatch(ArticleHandler.updateArticle));
-  app.post('/articles/:articleSlug/images', processFile.single('articleImage'), tryCatch(ArticleHandler.updateArticleImage));
+  app.post('/articles/:articleSlug/thumbnail-images', processFile.single('articleImage'), tryCatch(ArticleHandler.updateArticleThumbnailImage));
+  app.post('/articles/:articleId/images', processFile.single('image'), tryCatch(ArticleHandler.createArticleImage));
 }

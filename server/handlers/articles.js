@@ -13,6 +13,9 @@ const permittedFields = [
   'excerpt',
 ];
 
+async function createArticleImage(req, res) {
+  
+}
 
 async function getArticles (req, res, next) {
   // ?page=1 (implicit default)
@@ -107,7 +110,7 @@ async function updateArticle(req, res) {
   res.send(updatedArticle);
 }
 
-async function updateArticleImage(req, res) {
+async function updateArticleThumbnailImage(req, res) {
   // Update our database with metadata
   const article = await db.Article.findOne({
     where: {
@@ -157,9 +160,10 @@ async function updateArticleImage(req, res) {
 }
 
 module.exports = {
+  createArticleImage,
   getArticles,
   getArticle,
   createArticle,
   updateArticle,
-  updateArticleImage,
+  updateArticleThumbnailImage,
 };
