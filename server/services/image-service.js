@@ -11,35 +11,41 @@ module.exports = class ImageService {
     this.bucket = 'fff0-tech-news';
   }
 
+  getKeyForFile(file) {
+    const fileExtension = mime.getExtension(file.mimetype);
+    return `assets/images/${file.filename}.${fileExtension}`;
+  }
+
+  getKeyForUrl(url) {
+    return url.replace(`https://${this.bucket}.s3.amazonaws.com/`, '');
+  }
+
+  getUrlForFile(file) {
+    return `https://${this.bucket}.s3.amazonaws.com/${this.getKeyForFile(file)}`;
+  }
+
   isValid(file) {
     return file.mimetype.startsWith('image/');
   }
 
   async send(file) {
-    const fileExtension = mime.getExtension(file.mimetype);
-    const key = `assets/images/${file.filename}.${fileExtension}`;
     const filePath = path.join(file.destination, file.filename);
     const fileBody = fs.createReadStream(filePath);
     await this.s3Client.send(new PutObjectCommand({
       ACL: 'public-read',
       Bucket: this.bucket,
       CacheControl: 'max-age=604800', // 60s * 60m * 24h * 7d
-      Key: key,
+      Key: this.getKeyForFile(file),
       Body: fileBody,
       ContentLength: file.size,
       ContentType: file.mimetype, // e.g. image/jpeg
     }));
-    return {
-      thumbnailUrl: `https://${this.bucket}.s3.amazonaws.com/${key}`
-    };
   }
 
-  async remove(thumbnailUrl) {
-    const thumbnailKey = thumbnailUrl.replace(`https://${this.bucket}.s3.amazonaws.com/`, '');
-
+  async remove(key) {
     await this.s3Client.send(new DeleteObjectCommand({
       Bucket: this.bucket,
-      Key: thumbnailKey,
+      Key: key,
     }));
   }
 };

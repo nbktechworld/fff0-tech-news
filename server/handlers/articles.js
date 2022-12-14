@@ -182,8 +182,8 @@ async function updateArticleThumbnailImage(req, res) {
 
   let thumbnailUrl;
   try {
-    const s3Object = await imageService.send(req.file);
-    thumbnailUrl = s3Object.thumbnailUrl;
+    await imageService.send(req.file);
+    thumbnailUrl = imageService.getUrlForFile(req.file);
 
     // exercise: handle errors (try-catch)
     fs.promises.rm(oldPath);
@@ -193,7 +193,8 @@ async function updateArticleThumbnailImage(req, res) {
   }
 
   if (article.thumbnailUrl) {
-    await imageService.remove(article.thumbnailUrl);
+    const thumbnailKey = imageService.getKeyForUrl(article.thumbnailUrl);
+    await imageService.remove(thumbnailKey);
   }
   await article.update({
     thumbnailUrl
