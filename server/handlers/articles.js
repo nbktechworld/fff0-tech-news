@@ -5,6 +5,8 @@ const filterFields = require('../utilities/filterFields');
 const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const ImageService = require('../services/image-service');
 
+const maximumImageCount = 6;
+
 const permittedFields = [
   'slug',
   'title',
@@ -14,7 +16,50 @@ const permittedFields = [
 ];
 
 async function createArticleImage(req, res) {
-  
+  const { articleId } = req.params;
+  if (isNaN(articleId)) {
+    if (req.file) {
+      fs.promises.rm(req.file.path);
+    }
+    return res.status(404).send({ error: 'Not Found' });
+  }
+
+  const article = await db.Article.findOne({
+    where: {
+      id: articleId,
+    }
+  });
+  if (!article) {
+    if (req.file) {
+      fs.promises.rm(req.file.path);
+    }
+    return res.status(404).send({ error: 'Not Found' });
+  }
+
+  const articleImageCount = await article.countImages();
+  if (articleImageCount >= maximumImageCount) {
+    if (req.file) {
+      fs.promises.rm(req.file.path);
+    }
+    return res.status(422).send({ error: `You can only upload a maximum of ${maximumImageCount} images for an article.` });
+  }
+
+  // todo: error handling as exercise
+  // todo: file validation left as exercise as well
+  const imageService = new ImageService();
+  await imageService.send(req.file);
+
+  // todo: error handling as exercise
+  const image = await article.createImage({
+    filename: req.file.filename,
+    mimetype: req.file.mimetype,
+    originalFilename: req.file.originalname,
+    size: req.file.size,
+  });
+
+  console.log({ image });
+
+  return res.send(image.toJSON());
 }
 
 async function getArticles (req, res, next) {
