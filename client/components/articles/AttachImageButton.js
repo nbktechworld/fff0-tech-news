@@ -21,6 +21,17 @@ export default function AttachImageButton(props) {
     fileRef.current.click();
   }
 
+  function onFileChange(event) {
+    const file = fileRef.current.files[0];
+    const formData = new FormData();
+    formData.append('image', file);
+
+    fetch(`http://localhost:3001/articles/${props.articleId}/images`, {
+      method: 'POST',
+      body: formData,
+    })
+  }
+
   return (
     <>
       <Button className="me-2" onClick={onAttachImageClick} variant="secondary">
@@ -35,7 +46,7 @@ export default function AttachImageButton(props) {
           <div className={styles["attach-image-button__add-image"]} onClick={onAddImageClick}>
             <CloudUpload />
             Add
-            <input type="file" hidden ref={fileRef} />
+            <input type="file" hidden ref={fileRef} onChange={onFileChange} />
           </div>
         </Modal.Body>
       </Modal>

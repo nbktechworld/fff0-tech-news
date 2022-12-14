@@ -157,7 +157,7 @@ class ArticleForm extends React.Component {
               <MarkdownToolbar htmlFor="article_body" />
             </div>
             <div>
-              <AttachImageButton />
+              {this.props.article && <AttachImageButton articleId={this.props.article.id} />}
               <ToggleButton
                 type="checkbox"
                 variant="outline-secondary"
