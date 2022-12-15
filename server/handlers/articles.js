@@ -57,8 +57,6 @@ async function createArticleImage(req, res) {
     size: req.file.size,
   });
 
-  console.log({ image });
-
   return res.send(image.toJSON());
 }
 
