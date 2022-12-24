@@ -27,7 +27,7 @@ export default function AttachImageButton(props) {
           Attach Image
         </Modal.Header>
         <Modal.Body>
-          <ImageGallery />
+          <ImageGallery articleId={props.articleId} />
         </Modal.Body>
       </Modal>
     </>

@@ -5,6 +5,21 @@ import styles from './ImageGallery.module.scss';
 
 export default function ImageGallery(props) {
   const fileRef = React.createRef();
+  const [images, setImages] = React.useState([]);
+
+  React.useEffect(() => {
+    (async function() {
+      try {
+        const response = await fetch(`http://localhost:3001/articles/${props.articleId}/images`);
+        const images = await response.json();
+        debugger
+        setImages(images);
+      }
+      catch (error) {
+        // todo
+      }
+    })();
+  }, []);
 
   function onAddImageClick(event) {
     fileRef.current.click();
@@ -29,6 +44,13 @@ export default function ImageGallery(props) {
         Add
         <input type="file" hidden ref={fileRef} onChange={onFileChange} />
       </div>
+      {images.map((image) => {
+        return (
+          <div key={image.id}>
+            <img src={""} />
+          </div>
+        );
+      })}
     </>
   );
 }
