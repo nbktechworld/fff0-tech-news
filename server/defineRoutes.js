@@ -22,6 +22,7 @@ const processFile = multer({
 module.exports = function(app) {
   app.get('/articles', tryCatch(ArticleHandler.getArticles));
   app.get('/articles/:articleSlug', tryCatch(ArticleHandler.getArticle));
+  app.get('/articles/:articleId/images', tryCatch(ArticleHandler.getArticleImages))
   app.post('/articles', tryCatch(ArticleHandler.createArticle));
   app.put('/articles/:articleSlug', tryCatch(ArticleHandler.updateArticle));
   app.post('/articles/:articleSlug/thumbnail-images', processFile.single('articleImage'), tryCatch(ArticleHandler.updateArticleThumbnailImage));

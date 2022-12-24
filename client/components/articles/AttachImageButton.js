@@ -1,13 +1,13 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import { CloudUpload, Image } from 'react-bootstrap-icons';
+import { Image } from 'react-bootstrap-icons';
 import Modal from 'react-bootstrap/Modal';
 import styles from './AttachImageButton.module.scss';
 
+import ImageGallery from './ImageGallery';
+
 export default function AttachImageButton(props) {
   const [showAttachImageModal, setShowAttachImageModal] = React.useState(true); // todo: turn back to false after dev
-
-  const fileRef = React.createRef();
 
   function hideAttachImageModal() {
     setShowAttachImageModal(false);
@@ -15,21 +15,6 @@ export default function AttachImageButton(props) {
 
   function onAttachImageClick(event) {
     setShowAttachImageModal(true);
-  }
-
-  function onAddImageClick(event) {
-    fileRef.current.click();
-  }
-
-  function onFileChange(event) {
-    const file = fileRef.current.files[0];
-    const formData = new FormData();
-    formData.append('image', file);
-
-    fetch(`http://localhost:3001/articles/${props.articleId}/images`, {
-      method: 'POST',
-      body: formData,
-    })
   }
 
   return (
@@ -42,12 +27,7 @@ export default function AttachImageButton(props) {
           Attach Image
         </Modal.Header>
         <Modal.Body>
-          <p>Select an existing image below or click Add to upload.</p>
-          <div className={styles["attach-image-button__add-image"]} onClick={onAddImageClick}>
-            <CloudUpload />
-            Add
-            <input type="file" hidden ref={fileRef} onChange={onFileChange} />
-          </div>
+          <ImageGallery />
         </Modal.Body>
       </Modal>
     </>

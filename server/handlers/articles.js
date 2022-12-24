@@ -95,13 +95,29 @@ async function getArticle (req, res) {
   const article = await db.Article.findOne({
     where: {
       slug: req.params.articleSlug
-    }
+    },
   });
 
   if (!article) {
     return res.status(404).send({ error: 'Not Found' });
   }
   res.send(article);
+}
+
+async function getArticleImages(req, res) {
+  const article = await db.Article.findOne({
+    where: {
+      id: req.params.articleId
+    },
+  });
+
+  if (!article) {
+    return res.status(404).send({ error: 'Not Found' });
+  }
+
+  const images = await article.getImages({ joinTableAttributes: [] });
+
+  res.send(images);
 }
 
 async function createArticle(req, res) {
@@ -207,6 +223,7 @@ module.exports = {
   createArticleImage,
   getArticles,
   getArticle,
+  getArticleImages,
   createArticle,
   updateArticle,
   updateArticleThumbnailImage,
