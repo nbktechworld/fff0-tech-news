@@ -1,5 +1,6 @@
 import React from 'react';
 import { CloudUpload } from 'react-bootstrap-icons';
+import Image from 'next/image';
 
 import styles from './ImageGallery.module.scss';
 
@@ -12,7 +13,6 @@ export default function ImageGallery(props) {
       try {
         const response = await fetch(`http://localhost:3001/articles/${props.articleId}/images`);
         const images = await response.json();
-        debugger
         setImages(images);
       }
       catch (error) {
@@ -39,18 +39,20 @@ export default function ImageGallery(props) {
   return (
     <>
       <p>Select an existing image below or click Add to upload.</p>
-      <div className={styles["image-gallery__add-image"]} onClick={onAddImageClick}>
-        <CloudUpload />
-        Add
-        <input type="file" hidden ref={fileRef} onChange={onFileChange} />
+      <div className={styles['image-gallery__images']}>
+        <div className={`${styles["image-gallery__add-image"]} ${styles['image-gallery__image']}`} onClick={onAddImageClick}>
+          <CloudUpload />
+          Add
+          <input type="file" hidden ref={fileRef} onChange={onFileChange} />
+        </div>
+        {images.map((image) => {
+          return (
+            <div key={image.id} className={styles['image-gallery__image']}>
+              <Image src={image.url} alt="Gallery image" width={128} height={96} />
+            </div>
+          );
+        })}
       </div>
-      {images.map((image) => {
-        return (
-          <div key={image.id}>
-            <img src={""} />
-          </div>
-        );
-      })}
     </>
   );
 }

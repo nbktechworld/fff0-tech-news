@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const ImageService = require('../services/image-service');
 module.exports = (sequelize, DataTypes) => {
   class Image extends Model {
     /**
@@ -58,6 +59,15 @@ module.exports = (sequelize, DataTypes) => {
     size: {
       allowNull: false,
       type: DataTypes.INTEGER
+    },
+    url: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return (new ImageService()).getUrlForFile(this);
+      },
+      set() {
+        throw new Error('url is a virtual field and cannot be set');
+      }
     }
   }, {
     sequelize,

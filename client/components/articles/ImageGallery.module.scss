@@ -1,4 +1,8 @@
 .image-gallery {
+  &__images {
+    display: flex;
+  }
+
   &__add-image {
     border: 1px dashed #000000;
     cursor: pointer;
@@ -8,5 +12,9 @@
     align-items: center;
     width: 128px;
     height: 96px;
+  }
+
+  &__image {
+    margin-right: 8px;
   }
 }
