@@ -4,27 +4,13 @@ import Image from 'next/image';
 import Alert from 'react-bootstrap/Alert';
 
 import styles from './ImageGallery.module.scss';
+import useArticleImages from '../../hooks/useArticleImages';
+import useArticleImageUpload from '../../hooks/useArticleImageUpload';
 
 export default function ImageGallery(props) {
   const fileRef = React.createRef();
-  const [images, setImages] = React.useState([]);
-  const [imagesLoading, setImagesLoading] = React.useState(true);
-  const [imagesError, setImagesError] = React.useState('');
-
-  React.useEffect(() => {
-    (async function() {
-      try {
-        const response = await fetch(`http://localhost:3001/articles/${props.articleId}/images`);
-        const images = await response.json();
-        setImages(images);
-        setImagesLoading(false);
-      }
-      catch (error) {
-        setImagesError(error.message);
-        setImagesLoading(false);
-      }
-    })();
-  }, []);
+  const { images, imagesLoading, imagesError, addImages } = useArticleImages(props.articleId);
+  const { imageUploading, imageUploadingError, uploadArticleImage } = useArticleImageUpload(props.articleId);
 
   function onAddImageClick(event) {
     fileRef.current.click();
@@ -32,32 +18,26 @@ export default function ImageGallery(props) {
 
   function onFileChange(event) {
     const file = fileRef.current.files[0];
-    const formData = new FormData();
-    formData.append('image', file);
 
-    fetch(`http://localhost:3001/articles/${props.articleId}/images`, {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => response.json())
+    uploadArticleImage(file)
       .then((createdImage) => {
-        fileRef.current.value = '';
-        setImages([...images, createdImage]);
-      })
-      .catch((error) => {
-        // todo
-      })
+        addImages([createdImage]);
+      });
+
+    fileRef.current.value = '';
   }
 
   return (
     <>
       <p>Select an existing image below or click Add to upload.</p>
       {imagesError && <Alert variant="danger">{imagesError}</Alert>}
+      {imageUploadingError && <Alert variant="danger">{imageUploadingError}</Alert>}
       <div className={styles['image-gallery__images']}>
         <div className={`${styles["image-gallery__add-image"]} ${styles['image-gallery__image']}`} onClick={onAddImageClick}>
           <CloudUpload />
           Add
-          <input type="file" hidden ref={fileRef} onChange={onFileChange} />
+          {imageUploading && <><br />Loading</>}
+          <input type="file" hidden ref={fileRef} onChange={onFileChange} disabled={imageUploading} />
         </div>
         {imagesLoading && (
           <div className={`${styles['image-gallery__loading-image']} ${styles['image-gallery__image']}`}>
