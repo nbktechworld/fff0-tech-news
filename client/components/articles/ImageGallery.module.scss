@@ -16,6 +16,17 @@
     height: 96px;
   }
 
+  &__loading-image {
+    border: 1px solid #000000;
+    min-width: 128px;
+    width: 128px;
+    height: 96px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
   &__image {
     margin-right: 8px;
   }
