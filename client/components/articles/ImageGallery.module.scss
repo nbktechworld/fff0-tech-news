@@ -1,6 +1,7 @@
 .image-gallery {
   &__images {
     display: flex;
+    overflow: auto;
   }
 
   &__add-image {
@@ -10,6 +11,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    min-width: 128px;
     width: 128px;
     height: 96px;
   }
