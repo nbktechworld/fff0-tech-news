@@ -28,6 +28,27 @@
   }
 
   &__image {
+    height: 96px;
     margin-right: 8px;
+    position: relative;
+
+    &:hover .image-gallery__overlay {
+      display: block;
+    }
+  }
+
+  &__overlay {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    text-align: right;
+  }
+
+  &__overlay-button {
+    margin-left: 8px;
   }
 }

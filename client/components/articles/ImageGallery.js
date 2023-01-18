@@ -1,7 +1,8 @@
 import React from 'react';
-import { CloudUpload } from 'react-bootstrap-icons';
+import { Check, CloudUpload, Search, Trash } from 'react-bootstrap-icons';
 import Image from 'next/image';
 import Alert from 'react-bootstrap/Alert';
+import Button from 'react-bootstrap/Button';
 
 import styles from './ImageGallery.module.scss';
 import useArticleImages from '../../hooks/useArticleImages';
@@ -48,6 +49,11 @@ export default function ImageGallery(props) {
           return (
             <div key={image.id} className={styles['image-gallery__image']}>
               <Image src={image.url} alt="Gallery image" width={128} height={96} layout="fixed" />
+              <div className={styles['image-gallery__overlay']}>
+                <Button size="sm" variant="light" className={styles['image-gallery__overlay-button']}><Trash /></Button>
+                <Button size="sm" variant="light" className={styles['image-gallery__overlay-button']}><Search /></Button>
+                <Button size="sm" variant="light" className={styles['image-gallery__overlay-button']}><Check /></Button>
+              </div>
             </div>
           );
         })}
