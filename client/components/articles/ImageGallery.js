@@ -10,7 +10,7 @@ import useArticleImageUpload from '../../hooks/useArticleImageUpload';
 
 export default function ImageGallery(props) {
   const fileRef = React.createRef();
-  const { images, imagesLoading, imagesError, addImages } = useArticleImages(props.articleId);
+  const { imageRemoving, imageRemovingError, images, imagesLoading, imagesError, addImages, removeImage } = useArticleImages(props.articleId);
   const { imageUploading, imageUploadingError, uploadArticleImage } = useArticleImageUpload(props.articleId);
 
   function onAddImageClick(event) {
@@ -28,11 +28,18 @@ export default function ImageGallery(props) {
     fileRef.current.value = '';
   }
 
+  function onRemoveImageClick(imageId) {
+    return function(event) {
+      removeImage(imageId);
+    };
+  }
+
   return (
     <>
       <p>Select an existing image below or click Add to upload.</p>
       {imagesError && <Alert variant="danger">{imagesError}</Alert>}
       {imageUploadingError && <Alert variant="danger">{imageUploadingError}</Alert>}
+      {imageRemovingError && <Alert variant="danger">{imageRemovingError}</Alert>}
       <div className={styles['image-gallery__images']}>
         <div className={`${styles["image-gallery__add-image"]} ${styles['image-gallery__image']}`} onClick={onAddImageClick}>
           <CloudUpload />
@@ -50,7 +57,15 @@ export default function ImageGallery(props) {
             <div key={image.id} className={styles['image-gallery__image']}>
               <Image src={image.url} alt="Gallery image" width={128} height={96} layout="fixed" />
               <div className={styles['image-gallery__overlay']}>
-                <Button size="sm" variant="light" className={styles['image-gallery__overlay-button']}><Trash /></Button>
+                <Button
+                  size="sm"
+                  variant="light"
+                  className={styles['image-gallery__overlay-button']}
+                  onClick={onRemoveImageClick(image.id)}
+                  disabled={imageRemoving}
+                >
+                  <Trash />
+                </Button>
                 <Button size="sm" variant="light" className={styles['image-gallery__overlay-button']}><Search /></Button>
                 <Button size="sm" variant="light" className={styles['image-gallery__overlay-button']}><Check /></Button>
               </div>
