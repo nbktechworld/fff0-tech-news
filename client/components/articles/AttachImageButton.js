@@ -17,6 +17,11 @@ export default function AttachImageButton(props) {
     setShowAttachImageModal(true);
   }
 
+  function onImageSelect(image) {
+    setShowAttachImageModal(false);
+    props.onImageSelect(image);
+  }
+
   return (
     <>
       <Button className="me-2" onClick={onAttachImageClick} variant="secondary">
@@ -27,7 +32,7 @@ export default function AttachImageButton(props) {
           Attach Image
         </Modal.Header>
         <Modal.Body>
-          <ImageGallery articleId={props.articleId} />
+          <ImageGallery articleId={props.articleId} onImageSelect={onImageSelect} />
         </Modal.Body>
       </Modal>
     </>

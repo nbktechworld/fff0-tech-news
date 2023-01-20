@@ -34,6 +34,12 @@ export default function ImageGallery(props) {
     };
   }
 
+  function onSelectImageClick(image) {
+    return function() {
+      props.onImageSelect(image);
+    };
+  }
+
   return (
     <>
       <p>Select an existing image below or click Add to upload.</p>
@@ -67,7 +73,7 @@ export default function ImageGallery(props) {
                   <Trash />
                 </Button>
                 <Button size="sm" variant="light" className={styles['image-gallery__overlay-button']} href={image.url} target="_blank"><Search /></Button>
-                <Button size="sm" variant="light" className={styles['image-gallery__overlay-button']}><Check /></Button>
+                <Button size="sm" variant="light" className={styles['image-gallery__overlay-button']} onClick={onSelectImageClick(image)}><Check /></Button>
               </div>
             </div>
           );

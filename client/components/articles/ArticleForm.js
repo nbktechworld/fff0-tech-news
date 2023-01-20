@@ -25,6 +25,7 @@ class ArticleForm extends React.Component {
     this.onTogglePreview = this.onTogglePreview.bind(this);
     this.onHeadingClick = this.onHeadingClick.bind(this);
     this.onBoldClick = this.onBoldClick.bind(this);
+    this.onImageSelect = this.onImageSelect.bind(this);
 
     this.bodyRef = React.createRef();
   }
@@ -125,6 +126,23 @@ class ArticleForm extends React.Component {
     this.bodyRef.current.focus();
   }
 
+  onImageSelect(image) {
+    const { selectionStart, selectionEnd, value } = this.bodyRef.current;
+    const imageMark = `![alt text](${image.url})`;
+    let newValue;
+    if (selectionStart === 0 && selectionEnd === 0) {
+      newValue = value + imageMark;
+    }
+    else if (selectionStart !== selectionEnd) {
+      newValue = value.slice(0, selectionStart) + imageMark + value.slice(selectionEnd);
+    }
+    else {
+      newValue = value.slice(0, selectionStart) + imageMark + value.slice(selectionStart);
+    }
+
+    this.changeField('body', newValue);
+  }
+
   onTogglePreview(event) {
     this.setState({
       showPreview: !this.state.showPreview,
@@ -157,7 +175,7 @@ class ArticleForm extends React.Component {
               <MarkdownToolbar htmlFor="article_body" />
             </div>
             <div>
-              {this.props.article && <AttachImageButton articleId={this.props.article.id} />}
+              {this.props.article && <AttachImageButton articleId={this.props.article.id} onImageSelect={this.onImageSelect} />}
               <ToggleButton
                 type="checkbox"
                 variant="outline-secondary"
