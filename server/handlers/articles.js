@@ -48,6 +48,7 @@ async function createArticleImage(req, res) {
   // todo: file validation left as exercise as well
   const imageService = new ImageService();
   await imageService.send(req.file);
+  fs.promises.rm(req.file.path);
 
   // todo: error handling as exercise
   const image = await article.createImage({

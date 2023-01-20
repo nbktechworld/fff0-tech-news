@@ -1,5 +1,4 @@
 import React from 'react';
-import useArticleImages from './useArticleImages';
 
 export default function useArticleImageUpload(articleId) {
   const [imageUploading, setImageUploading] = React.useState(false);
