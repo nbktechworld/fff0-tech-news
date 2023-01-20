@@ -60,6 +60,39 @@ async function createArticleImage(req, res) {
   return res.send(image.toJSON());
 }
 
+async function destroyArticleImage(req, res) {
+  const { articleId, imageId } = req.params;
+  if (isNaN(articleId) || isNaN(imageId)) {
+    return res.status(404).send({ error: 'Not Found' });
+  }
+  const articleImage = await db.ArticleImage.findOne({
+    where: {
+      articleId: articleId,
+      imageId: imageId
+    },
+    include: [
+      {
+        model: db.Image,
+        as: 'image'
+      }
+    ]
+  });
+  if (!articleImage) {
+    return res.status(404).send({ error: 'Not Found' });
+  }
+  const { image } = articleImage;
+  await articleImage.destroy();
+
+  const imageService = new ImageService();
+  const imageKey = imageService.getKeyForFile(image);
+  (async () => {
+    await imageService.remove(imageKey);
+    await image.destroy();
+  })();
+
+  return res.status(204).send();
+}
+
 async function getArticles (req, res, next) {
   // ?page=1 (implicit default)
   // offset: 0
@@ -221,6 +254,7 @@ async function updateArticleThumbnailImage(req, res) {
 
 module.exports = {
   createArticleImage,
+  destroyArticleImage,
   getArticles,
   getArticle,
   getArticleImages,
