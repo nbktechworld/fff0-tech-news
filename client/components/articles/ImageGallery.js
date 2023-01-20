@@ -66,7 +66,7 @@ export default function ImageGallery(props) {
                 >
                   <Trash />
                 </Button>
-                <Button size="sm" variant="light" className={styles['image-gallery__overlay-button']}><Search /></Button>
+                <Button size="sm" variant="light" className={styles['image-gallery__overlay-button']} href={image.url} target="_blank"><Search /></Button>
                 <Button size="sm" variant="light" className={styles['image-gallery__overlay-button']}><Check /></Button>
               </div>
             </div>
