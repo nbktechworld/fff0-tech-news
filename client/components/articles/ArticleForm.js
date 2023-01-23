@@ -3,8 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import ToggleButton from 'react-bootstrap/ToggleButton';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import MarkdownRegion from '../MarkdownRegion';
 import MarkdownToolbar from '../MarkdownToolbar';
 import AttachImageButton from './AttachImageButton';
 
@@ -188,9 +187,9 @@ class ArticleForm extends React.Component {
             </div>
           </div>
           {this.state.showPreview ? (
-            <ReactMarkdown remarkPlugins={[remarkGfm]} className="article-form__body-preview">
+            <MarkdownRegion className="article-form__body-preview">
               {this.state.article.body}
-            </ReactMarkdown>
+            </MarkdownRegion>
           ) : (
             <Form.Control as="textarea" onChange={this.onFieldChange('body')} value={this.state.article.body} required maxLength={4096} rows="7" ref={this.bodyRef} />
           )}

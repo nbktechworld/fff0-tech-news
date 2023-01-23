@@ -4,9 +4,8 @@ import Link from 'next/link';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import { PencilSquare } from 'react-bootstrap-icons';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import SEO from '../../components/SEO';
+import MarkdownRegion from '../../components/MarkdownRegion';
 
 export default function ArticleSlug(props) {
   const metaImage = props.article.thumbnailUrl || `${process.env.clientUrl}/thumbnail_placeholder.png`;
@@ -43,7 +42,7 @@ export default function ArticleSlug(props) {
           <Card.Body>
             <Card.Title>{props.article.title}</Card.Title>
             <Card.Subtitle className="mb-2 text-muted">{props.article.excerpt}</Card.Subtitle>
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{props.article.body}</ReactMarkdown>
+            <MarkdownRegion>{props.article.body}</MarkdownRegion>
           </Card.Body>
         </Card>
       )}

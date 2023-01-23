@@ -7,7 +7,7 @@ import styles from './AttachImageButton.module.scss';
 import ImageGallery from './ImageGallery';
 
 export default function AttachImageButton(props) {
-  const [showAttachImageModal, setShowAttachImageModal] = React.useState(true); // todo: turn back to false after dev
+  const [showAttachImageModal, setShowAttachImageModal] = React.useState(false);
 
   function hideAttachImageModal() {
     setShowAttachImageModal(false);
