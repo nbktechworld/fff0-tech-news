@@ -61,7 +61,7 @@ export default function ImageGallery(props) {
         {images.map((image) => {
           return (
             <div key={image.id} className={styles['image-gallery__image']}>
-              <Image src={image.url} alt="Gallery image" width={128} height={96} layout="fixed" />
+              <Image src={image.url} alt="Gallery image" width={128} height={96}  />
               <div className={styles['image-gallery__overlay']}>
                 <Button
                   size="sm"

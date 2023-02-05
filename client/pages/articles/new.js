@@ -48,7 +48,7 @@ class ArticlesNew extends React.Component {
     return (
       <>
         <Breadcrumb>
-          <Breadcrumb.Item href="/articles" linkAs={Link}><a>Articles</a></Breadcrumb.Item>
+          <Breadcrumb.Item href="/articles" linkAs={Link}>Articles</Breadcrumb.Item>
           <Breadcrumb.Item active>New</Breadcrumb.Item>
         </Breadcrumb>
         <ArticleForm onSubmit={this.onSubmit} onSuccess={this.onSuccess} />

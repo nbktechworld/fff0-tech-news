@@ -66,8 +66,8 @@ class ArticleEdit extends React.Component {
     return (
       <>
         <Breadcrumb>
-          <Breadcrumb.Item href="/articles" linkAs={Link}><a>Articles</a></Breadcrumb.Item>
-          <Breadcrumb.Item href={`/articles/${this.props.router.query.articleSlug}`} linkAs={Link}><a>Article</a></Breadcrumb.Item>
+          <Breadcrumb.Item href="/articles" linkAs={Link}>Articles</Breadcrumb.Item>
+          <Breadcrumb.Item href={`/articles/${this.props.router.query.articleSlug}`} linkAs={Link}>Article</Breadcrumb.Item>
           <Breadcrumb.Item active>Edit</Breadcrumb.Item>
         </Breadcrumb>
         {this.props.articleError ? (

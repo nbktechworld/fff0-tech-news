@@ -87,8 +87,8 @@ function App({ Component, pageProps }) {
       <header>
         <Navbar bg="dark" variant="light">
           <Container>
-            <Navbar.Brand href="/" as={Link}>
-              <a className="text-bg-dark">Tech News</a>
+            <Navbar.Brand href="/" as={Link} className="text-bg-dark">
+              Tech News
             </Navbar.Brand>
           </Container>
         </Navbar>

@@ -13,8 +13,8 @@ export default function ArticlesIndex(props) {
 
     for (let page = 1; page <= props.articles.meta.totalPages; page++) {
       paginationItems.push((
-        <Link href={`?page=${page}`} passHref key={page}>
-          <Pagination.Item active={page === parseInt(router.query.page, 10)}>
+        <Link href={`?page=${page}`} passHref key={page} legacyBehavior>
+          <Pagination.Item active={page === parseInt(router.query.page, 10)} as={Link}>
             {page}
           </Pagination.Item>
         </Link>
@@ -32,11 +32,9 @@ export default function ArticlesIndex(props) {
     <>
       <div className="d-flex justify-content-between mb-2">
         Articles
-        <Link href="/articles/new" passHref>
-          <Button as={"a"} variant="primary" size="sm">
-            New article
-          </Button>
-        </Link>
+        <Button as={Link} variant="primary" size="sm" href="/articles/new">
+          New article
+        </Button>
       </div>
       {props.articlesError && (
         <Alert variant="danger">
@@ -55,7 +53,7 @@ export default function ArticlesIndex(props) {
               </div>
               <div>
                 <Link href={`/articles/${article.slug}`}>
-                  <a>{article.title}</a>
+                  {article.title}
                 </Link>
                 <div>{article.excerpt}</div>
               </div>
@@ -65,7 +63,7 @@ export default function ArticlesIndex(props) {
       </div>
       {renderPagination()}
     </>
-  )
+  );
 }
 
 export async function getServerSideProps(context) {

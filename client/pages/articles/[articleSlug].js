@@ -20,17 +20,15 @@ export default function ArticleSlug(props) {
       <div className="d-flex justify-content-between">
         <Breadcrumb>
           <Breadcrumb.Item linkAs={Link} href="/articles">
-            <a>Articles</a>
+            Articles
           </Breadcrumb.Item>
           <Breadcrumb.Item active>
-            <a>Article</a>
+            Article
           </Breadcrumb.Item>
         </Breadcrumb>
-        <Link href={`/articles/${props.article.slug}/edit`} passHref>
-          <Button as="a" size="sm" className="align-self-start">
-            <PencilSquare className="me-2" />Edit
-          </Button>
-        </Link>
+        <Button as={Link} size="sm" className="align-self-start" href={`/articles/${props.article.slug}/edit`}>
+          <PencilSquare className="me-2" />Edit
+        </Button>
       </div>
       {props.articleError && (
         <Alert variant="danger">
@@ -47,7 +45,7 @@ export default function ArticleSlug(props) {
         </Card>
       )}
     </>
-  )
+  );
 }
 
 export async function getServerSideProps(context) {

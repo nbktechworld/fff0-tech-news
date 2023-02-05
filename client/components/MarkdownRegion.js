@@ -11,7 +11,7 @@ export default function MarkdownRegion(props) {
         const TheComponent = Image;
         return (
           <a href={imgProps.src} target="_blank">
-            <TheComponent {...imgProps.node.properties} width="1920" height="1080" />
+            <TheComponent {...imgProps.node.properties} width="1920" height="1080" style={{ maxWidth: '100%', height: 'auto' }} />
           </a>
         );
       }
