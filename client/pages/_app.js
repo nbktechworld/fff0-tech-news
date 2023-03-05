@@ -12,7 +12,6 @@ import { useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import Toast from 'react-bootstrap/Toast';
 import { ExclamationCircle } from 'react-bootstrap-icons';
-import Head from 'next/head';
 import SEO from '../components/SEO';
 
 // When listening to router transitions, if you use class-based:

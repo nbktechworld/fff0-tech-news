@@ -25,7 +25,7 @@ export default function AttachImageButton(props) {
   return (
     <>
       <Button className="me-2" onClick={onAttachImageClick} variant="secondary">
-        <Image /> Attach Image
+        <Image alt="image icon" /> Attach Image
       </Button>
       <Modal show={showAttachImageModal} onHide={hideAttachImageModal} centered dialogClassName={styles['attach-image-button__modal-dialog']}>
         <Modal.Header closeButton>
