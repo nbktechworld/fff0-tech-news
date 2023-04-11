@@ -6,9 +6,9 @@ const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/cl
 module.exports = class ImageService {
   constructor() {
     this.s3Client = new S3Client({
-      region: 'us-east-1'
+      region: process.env.AWS_S3_REGION,
     });
-    this.bucket = 'fff0-tech-news';
+    this.bucket = process.env.AWS_S3_BUCKET;
   }
 
   getKeyForFile(file) {

@@ -5,7 +5,7 @@ module.exports = {
   images: {
     domains: [
       'localhost',
-      'fff0-tech-news.s3.amazonaws.com',
+      `${process.env.AWS_S3_BUCKET}.s3.amazonaws.com`,
     ]
   },
   async redirects() {
