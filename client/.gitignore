@@ -1,3 +1,4 @@
-.env*
+.env
+.env.production
 .next/
 node_modules/
