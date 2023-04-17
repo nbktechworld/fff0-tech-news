@@ -1,7 +1,14 @@
 'use strict';
 
+const ImageService = require("../services/image-service");
+const FileUtility = require('../test/utilities/file-utility');
+
 module.exports = {
   async up (queryInterface, Sequelize) {
+    const imageService = new ImageService();
+    const article1File = await FileUtility.buildFile('027c817e71542424114393380e22a69a');
+    await imageService.send(article1File);
+
     await queryInterface.bulkInsert('articles', [
       {
         title: 'Lorem ipsum dolor sit amet, consectetur adipiscing',
@@ -10,6 +17,7 @@ module.exports = {
         excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         created_at: new Date(),
         updated_at: new Date(),
+        thumbnail_url: imageService.getUrlForFile(article1File),
       },
       {
         title: 'Ut enim ad minim veniam, quis nostrud exercitation',
@@ -31,6 +39,18 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('articles', null, {});
+    const imageService = new ImageService();
+    const article1File = await FileUtility.buildFile('027c817e71542424114393380e22a69a');
+    await imageService.remove(imageService.getKeyForFile(article1File));
+
+    await queryInterface.bulkDelete('articles', {
+      slug: {
+        [Sequelize.Op.in]: [
+          'lorem-ipsum-dolor-sit-amet-consectetur-adipiscing',
+          'ut-enim-ad-minim-veniam',
+          'duis-aute-irure-dolor-in-reprehenderit',
+        ]
+      }
+    }, {});
   }
 };
