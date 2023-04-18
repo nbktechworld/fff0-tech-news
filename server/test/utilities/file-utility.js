@@ -6,6 +6,7 @@ async function buildFile(filename) {
   return ({
     destination: fixtureDirectory,
     filename,
+    originalname: filename,
     mimetype: 'image/jpeg',
     size: (await fs.promises.stat(path.join(fixtureDirectory, filename))).size,
   });
