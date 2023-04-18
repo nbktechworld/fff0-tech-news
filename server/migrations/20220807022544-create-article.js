@@ -1,4 +1,7 @@
 'use strict';
+
+const ImageService = require('../services/image-service');
+
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('articles', {
@@ -39,6 +42,12 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
+    const imageService = new ImageService();
+    const articleData = await queryInterface.sequelize.query('SELECT thumbnail_url FROM articles WHERE thumbnail_url IS NOT NULL', { type: queryInterface.sequelize.QueryTypes.SELECT });
+    for (const { thumbnail_url } of articleData) {
+      await imageService.remove(imageService.getKeyForUrl(thumbnail_url));
+    }
+
     await queryInterface.dropTable('articles');
   }
 };
