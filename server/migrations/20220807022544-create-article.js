@@ -28,7 +28,14 @@ module.exports = {
       updated_at: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
+      thumbnail_url: {
+        type: Sequelize.STRING(4096)
+      },
+      excerpt: {
+        type: Sequelize.STRING(256),
+        allowNull: false
+      },
     });
   },
   async down(queryInterface, Sequelize) {
